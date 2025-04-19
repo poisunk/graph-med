@@ -17,6 +17,7 @@ type AllConfig struct {
 	Redis  Redis  `yaml:"redis"`
 	Email  Email  `yaml:"email"`
 	Mcp    Mcp    `yaml:"mcp"`
+	Log    Log    `yaml:"log"`
 }
 
 type Server struct {
@@ -62,6 +63,11 @@ type Email struct {
 
 type Mcp struct {
 	Port string `yaml:"port"`
+}
+
+type Log struct {
+	Level  string `yaml:"level"`
+	Output string `yaml:"output"`
 }
 
 func LoadConfig(path string) (*AllConfig, error) {

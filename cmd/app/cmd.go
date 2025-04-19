@@ -6,6 +6,7 @@ import (
 	"graph-med/internal/base/captcha"
 	"graph-med/internal/base/conf"
 	"graph-med/internal/base/data"
+	"graph-med/internal/base/logger"
 	"graph-med/internal/base/redis"
 	"log"
 	"os"
@@ -62,6 +63,8 @@ func RunApp() {
 		fmt.Println("加载配置失败:", err)
 		return
 	}
+
+	logger.Initialize(config)
 
 	// 初始化Redis
 	err = redis.Setup(config)

@@ -2,12 +2,15 @@ package captcha
 
 import (
 	"fmt"
-	"github.com/jordan-wright/email"
+	"graph-med/internal/base/logger"
 	"graph-med/internal/base/redis"
 	"math/rand"
 	"net/smtp"
 	"strconv"
 	"time"
+
+	"github.com/jordan-wright/email"
+	"go.uber.org/zap"
 )
 
 type EmailCaptchaData struct {
@@ -68,15 +71,21 @@ func sendEmailCode(emailAddr, code string) error {
 	`, code))
 
 	// 配置SMTP服务器信息
-	err := e.Send(smtpServer+":"+smtpPort, smtp.PlainAuth("",
-		userEmail,
-		userPass,
-		smtpServer,
-	))
 
-	if err != nil {
-		return fmt.Errorf("发送邮件失败: %v", err)
-	}
+	go func() {
+		err := e.Send(smtpServer+":"+smtpPort, smtp.PlainAuth("",
+			userEmail,
+			userPass,
+			smtpServer,
+		))
+
+		if err != nil {
+			logger.Error("邮件发送失败", zap.String("error", err.Error()))
+			return
+		}
+
+		logger.Info("邮件发送成功")
+	}()
 
 	return nil
 }
