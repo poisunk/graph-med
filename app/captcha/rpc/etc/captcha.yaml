@@ -7,7 +7,7 @@ Log:
   Level: error
 
 Redis:
-  Host: localhost:6379
+  Host: redis:6379
   Key: usercenter-rpc
 
 EmailConfig:

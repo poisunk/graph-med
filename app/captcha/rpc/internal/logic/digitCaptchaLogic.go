@@ -48,13 +48,3 @@ func (l *DigitCaptchaLogic) DigitCaptcha(in *pd.DigitCaptchaReq) (*pd.DigitCaptc
 		CaptchaImg: b64s,
 	}, nil
 }
-
-func (l *DigitCaptchaLogic) VerifyDigitCaptcha(id, answer string) (bool, error) {
-	graphMedCaptchaKey := fmt.Sprintf("%s%v", cacheGraphMedCaptchaDigitPrefix, id)
-	value, err := l.svcCtx.RedisClient.Get(graphMedCaptchaKey)
-	if err != nil {
-		return false, err
-	}
-
-	return value == answer, nil
-}

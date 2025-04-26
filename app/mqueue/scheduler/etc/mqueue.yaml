@@ -1,0 +1,9 @@
+Name: mqueue-scheduler
+Mode: dev
+
+Log:
+  ServiceName: mqueue-scheduler
+  Level: error
+
+Redis:
+  Host: redis:6379

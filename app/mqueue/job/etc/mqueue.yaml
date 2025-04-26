@@ -1,0 +1,14 @@
+Name: mqueue-job
+Mode: dev
+
+Log:
+  ServiceName: mqueue-job
+  Level: error
+
+Redis:
+  Host: redis:6379
+
+CaptchaRpcConf:
+  Endpoints:
+    - 127.0.0.1:2002
+  NonBlock: true

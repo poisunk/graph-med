@@ -6,13 +6,11 @@ import (
 	images "github.com/wenlng/go-captcha-assets/resources/images_v2"
 	"github.com/wenlng/go-captcha/v2/base/option"
 	"github.com/wenlng/go-captcha/v2/rotate"
+	"github.com/zeromicro/go-zero/core/logx"
 	"graph-med/app/captcha/rpc/internal/svc"
 	"graph-med/app/captcha/rpc/pd"
 	"graph-med/internal/utils"
 	"log"
-	"strconv"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type RotateCaptchaLogic struct {
@@ -80,28 +78,4 @@ func (l *RotateCaptchaLogic) RotateCaptcha(in *pd.RotateCaptchaReq) (*pd.RotateC
 		ParentSize:  int32(captData.GetData().ParentWidth),
 		ChildSize:   int32(captData.GetData().Width),
 	}, nil
-}
-
-func (l *RotateCaptchaLogic) VerifyRotateCaptcha(id, answer string) (bool, error) {
-	graphMedCaptchaKey := fmt.Sprintf("%s%v", cacheGraphMedCaptchaRotatePrefix, id)
-	srcAngle, err := l.svcCtx.RedisClient.Get(graphMedCaptchaKey)
-	if err != nil {
-		return false, err
-	}
-	_, err = l.svcCtx.RedisClient.Del(graphMedCaptchaKey)
-	if err != nil {
-		return false, err
-	}
-
-	srcAngleInt, err := strconv.ParseInt(srcAngle, 10, 64)
-	if err != nil {
-		return false, err
-	}
-
-	angle, err := strconv.ParseInt(answer, 10, 64)
-	if err != nil {
-		return false, err
-	}
-
-	return rotate.CheckAngle(srcAngleInt, angle, 10), nil
 }

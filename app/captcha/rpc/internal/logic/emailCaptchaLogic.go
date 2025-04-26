@@ -2,11 +2,13 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
+	"github.com/hibiken/asynq"
 	"graph-med/app/captcha/rpc/internal/svc"
 	"graph-med/app/captcha/rpc/pd"
-	"graph-med/internal/base/redis"
+	"graph-med/app/mqueue/job/jobtype"
 	"graph-med/pkg/tool"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -47,8 +49,14 @@ func (l *EmailCaptchaLogic) EmailCaptcha(in *pd.EmailCaptchaReq) (*pd.EmailCaptc
 	}
 
 	// 发送验证码到邮箱
-	//err = sendEmailCode(email, code)
+	payload, err := json.Marshal(jobtype.CaptchaSendEmailPayload{
+		Email: in.Email,
+		Code:  code,
+	})
+	_, err = l.svcCtx.AsynqClient.Enqueue(asynq.NewTask(jobtype.CaptchaSendEmail, payload))
 	if err != nil {
+		logx.WithContext(l.ctx).Errorf("send email insert queue fail err :%+v , email : %s, code : %s", err, in.Email, code)
+
 		// 如果发送失败，删除Redis中的验证码
 		_, _ = l.svcCtx.RedisClient.Del(graphMedCaptchaEmailKey)
 		return nil, fmt.Errorf("failed to send email: %v", err)
@@ -57,21 +65,4 @@ func (l *EmailCaptchaLogic) EmailCaptcha(in *pd.EmailCaptchaReq) (*pd.EmailCaptc
 	return &pd.EmailCaptchaResp{
 		CaptchaId: captchaId,
 	}, nil
-}
-
-func (l *EmailCaptchaLogic) VerifyCaptcha(id, answer string) (bool, error) {
-	graphMedCaptchaKey := fmt.Sprintf("%s%v", cacheGraphMedCaptchaEmailPrefix, id)
-
-	value, err := l.svcCtx.RedisClient.Get(graphMedCaptchaKey)
-	if err != nil {
-		return false, err
-	}
-
-	// 验证成功后删除Redis中的验证码，防止重复使用
-	err = redis.Del(graphMedCaptchaKey)
-	if err != nil {
-		return false, err
-	}
-
-	return value == answer, nil
 }
