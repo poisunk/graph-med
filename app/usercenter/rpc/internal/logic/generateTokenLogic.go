@@ -30,9 +30,9 @@ func NewGenerateTokenLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Gen
 func (l *GenerateTokenLogic) GenerateToken(in *pd.GenerateTokenReq) (*pd.GenerateTokenResp, error) {
 	now := time.Now().Unix()
 	accessExpire := l.svcCtx.Config.JwtAuth.AccessExpire
-	accessToken, err := l.getJwtToken(l.svcCtx.Config.JwtAuth.AccessSecret, now, accessExpire, in.UserId)
+	accessToken, err := l.getJwtToken(l.svcCtx.Config.JwtAuth.AccessSecret, now, accessExpire, in.Id)
 	if err != nil {
-		return nil, errors.Wrapf(ErrGenerateTokenError, "getJwtToken err userId:%d , err:%v", in.UserId, err)
+		return nil, errors.Wrapf(ErrGenerateTokenError, "getJwtToken err:%v", err)
 	}
 
 	return &pd.GenerateTokenResp{

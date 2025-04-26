@@ -6,7 +6,7 @@ info(
 )
 
 type User {
-    UserId   int64  `json:"userId"`
+    UserId   string  `json:"userId"`
     Nickname string `json:"nickname"`
     Mobile   string `json:"mobile"`
     Email    string `json:"email"`

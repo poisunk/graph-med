@@ -7,7 +7,7 @@ package pd;
 
 // model
 message User {
-  int64 userId = 1;
+  string userId = 1;
   string nickname = 2;
   string mobile = 3;
   string email = 4;
@@ -50,7 +50,7 @@ message GetUserInfoResp {
 }
 
 message GenerateTokenReq {
-  int64 userId = 1;
+  int64 id = 1;
 }
 message GenerateTokenResp {
   string accessToken = 1;

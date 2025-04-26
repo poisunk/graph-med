@@ -24,7 +24,7 @@ const (
 // model
 type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=userId,proto3" json:"userId,omitempty"`
 	Nickname      string                 `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
 	Mobile        string                 `protobuf:"bytes,3,opt,name=mobile,proto3" json:"mobile,omitempty"`
 	Email         string                 `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
@@ -65,11 +65,11 @@ func (*User) Descriptor() ([]byte, []int) {
 	return file_usercenter_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *User) GetUserId() int64 {
+func (x *User) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 func (x *User) GetNickname() string {
@@ -461,7 +461,7 @@ func (x *GetUserInfoResp) GetUser() *User {
 
 type GenerateTokenReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -496,9 +496,9 @@ func (*GenerateTokenReq) Descriptor() ([]byte, []int) {
 	return file_usercenter_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *GenerateTokenReq) GetUserId() int64 {
+func (x *GenerateTokenReq) GetId() int64 {
 	if x != nil {
-		return x.UserId
+		return x.Id
 	}
 	return 0
 }
@@ -569,7 +569,7 @@ const file_usercenter_proto_rawDesc = "" +
 	"\n" +
 	"\x10usercenter.proto\x12\x02pd\"\xa6\x01\n" +
 	"\x04User\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\x03R\x06userId\x12\x1a\n" +
+	"\x06userId\x18\x01 \x01(\tR\x06userId\x12\x1a\n" +
 	"\bnickname\x18\x02 \x01(\tR\bnickname\x12\x16\n" +
 	"\x06mobile\x18\x03 \x01(\tR\x06mobile\x12\x14\n" +
 	"\x05email\x18\x04 \x01(\tR\x05email\x12\x10\n" +
@@ -597,9 +597,9 @@ const file_usercenter_proto_rawDesc = "" +
 	"\x0eGetUserInfoReq\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"/\n" +
 	"\x0fGetUserInfoResp\x12\x1c\n" +
-	"\x04user\x18\x01 \x01(\v2\b.pd.UserR\x04user\"*\n" +
-	"\x10GenerateTokenReq\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\x03R\x06userId\"}\n" +
+	"\x04user\x18\x01 \x01(\v2\b.pd.UserR\x04user\"\"\n" +
+	"\x10GenerateTokenReq\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"}\n" +
 	"\x11GenerateTokenResp\x12 \n" +
 	"\vaccessToken\x18\x01 \x01(\tR\vaccessToken\x12\"\n" +
 	"\faccessExpire\x18\x02 \x01(\x03R\faccessExpire\x12\"\n" +

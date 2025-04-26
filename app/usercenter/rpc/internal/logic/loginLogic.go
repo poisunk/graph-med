@@ -32,11 +32,11 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(in *pd.LoginReq) (*pd.LoginResp, error) {
-	var userId int64
+	var id int64
 	var err error
 	switch in.AuthType {
 	case model.UserAuthTypeSystem:
-		userId, err = l.loginByEmail(in.AuthKey, in.Password)
+		id, err = l.loginByEmail(in.AuthKey, in.Password)
 	default:
 		return nil, xerr.NewErrCode(xerr.SERVER_COMMON_ERROR)
 	}
@@ -46,10 +46,10 @@ func (l *LoginLogic) Login(in *pd.LoginReq) (*pd.LoginResp, error) {
 
 	generateTokenLogic := NewGenerateTokenLogic(l.ctx, l.svcCtx)
 	tokenResp, err := generateTokenLogic.GenerateToken(&usercenter.GenerateTokenReq{
-		UserId: userId,
+		Id: id,
 	})
 	if err != nil {
-		return nil, errors.Wrapf(ErrGenerateTokenError, "GenerateToken userId : %d", userId)
+		return nil, errors.Wrapf(ErrGenerateTokenError, "GenerateToken fail")
 	}
 
 	return &usercenter.LoginResp{

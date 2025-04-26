@@ -44,7 +44,7 @@ func (l *RegisterLogic) Register(in *pd.RegisterReq) (*pd.RegisterResp, error) {
 	}
 
 	// 2. 插入用户
-	var userId int64
+	var id int64
 	if err := l.svcCtx.UserModel.Trans(l.ctx, func(ctx context.Context, session sqlx.Session) error {
 		user := new(model.User)
 		// email
@@ -71,7 +71,7 @@ func (l *RegisterLogic) Register(in *pd.RegisterReq) (*pd.RegisterResp, error) {
 		if err != nil {
 			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "Register db user insertResult.LastInsertId err:%v,user:%+v", err, user)
 		}
-		userId = lastId
+		id = lastId
 		return nil
 	}); err != nil {
 		return nil, err
@@ -80,10 +80,10 @@ func (l *RegisterLogic) Register(in *pd.RegisterReq) (*pd.RegisterResp, error) {
 	// 3. 生成token
 	generateTokenLogic := NewGenerateTokenLogic(l.ctx, l.svcCtx)
 	tokenResp, err := generateTokenLogic.GenerateToken(&usercenter.GenerateTokenReq{
-		UserId: userId,
+		Id: id,
 	})
 	if err != nil {
-		return nil, errors.Wrapf(ErrGenerateTokenError, "GenerateToken userId : %d", userId)
+		return nil, errors.Wrapf(ErrGenerateTokenError, "GenerateToken fail")
 	}
 
 	return &usercenter.RegisterResp{

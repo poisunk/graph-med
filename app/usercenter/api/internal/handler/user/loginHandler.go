@@ -1,6 +1,7 @@
 package user
 
 import (
+	"graph-med/pkg/result"
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -20,10 +21,6 @@ func LoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := user.NewLoginLogic(r.Context(), svcCtx)
 		resp, err := l.Login(&req)
-		if err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
-		} else {
-			httpx.OkJsonCtx(r.Context(), w, resp)
-		}
+		result.HttpResult(r, w, resp, err)
 	}
 }

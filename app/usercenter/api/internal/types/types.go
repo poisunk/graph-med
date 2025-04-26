@@ -26,7 +26,7 @@ type RegisterResp struct {
 }
 
 type User struct {
-	Id       int64  `json:"id"`
+	UserId   string `json:"userId"`
 	Nickname string `json:"nickname"`
 	Mobile   string `json:"mobile"`
 	Email    string `json:"email"`

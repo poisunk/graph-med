@@ -1,6 +1,7 @@
 package user
 
 import (
+	"graph-med/pkg/result"
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -20,10 +21,6 @@ func DetailHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := user.NewDetailLogic(r.Context(), svcCtx)
 		resp, err := l.Detail(&req)
-		if err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
-		} else {
-			httpx.OkJsonCtx(r.Context(), w, resp)
-		}
+		result.HttpResult(r, w, resp, err)
 	}
 }
