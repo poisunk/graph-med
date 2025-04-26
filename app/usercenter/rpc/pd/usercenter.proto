@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+option go_package="./pd";
+
+package pd;
+
+
+// model
+message User {
+  int64 userId = 1;
+  string nickname = 2;
+  string mobile = 3;
+  string email = 4;
+  int64  sex = 5;
+  string avatar = 6;
+  string info = 7;
+}
+
+
+// req 、resp
+message RegisterReq {
+  string email = 1;
+  string nickname = 2;
+  string password = 3;
+  string authKey = 4;
+  string authType = 5;
+}
+message RegisterResp {
+  string accessToken = 1;
+  int64  accessExpire = 2;
+  int64  refreshAfter = 3;
+}
+
+message LoginReq {
+  string authType = 1;
+  string authKey = 2;
+  string password = 3;
+}
+message LoginResp {
+  string accessToken = 1;
+  int64  accessExpire = 2;
+  int64  refreshAfter = 3;
+}
+
+message GetUserInfoReq {
+  int64  id = 1;
+}
+message GetUserInfoResp {
+  User user = 1;
+}
+
+message GenerateTokenReq {
+  int64 userId = 1;
+}
+message GenerateTokenResp {
+  string accessToken = 1;
+  int64  accessExpire = 2;
+  int64  refreshAfter = 3;
+}
+
+service Usercenter {
+  rpc login(LoginReq) returns(LoginResp);
+  rpc register(RegisterReq) returns(RegisterResp);
+  rpc getUserInfo(GetUserInfoReq) returns(GetUserInfoResp);
+  rpc generateToken(GenerateTokenReq) returns(GenerateTokenResp);
+}

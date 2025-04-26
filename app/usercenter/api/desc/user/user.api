@@ -1,0 +1,48 @@
+syntax = "v1"
+
+info(
+    title: "用户实例"
+    desc: "用户实例"
+)
+
+type User {
+    UserId   int64  `json:"userId"`
+    Nickname string `json:"nickname"`
+    Mobile   string `json:"mobile"`
+    Email    string `json:"email"`
+    Sex      int64  `json:"sex"`
+    Avatar   string `json:"avatar"`
+    Info     string `json:"info"`
+}
+
+type (
+    RegisterReq {
+        Email    string `json:"email"`
+        Password string `json:"password"`
+    }
+    RegisterResp {
+        AccessToken  string `json:"accessToken"`
+        AccessExpire int64  `json:"accessExpire"`
+        RefreshAfter int64  `json:"refreshAfter"`
+    }
+)
+
+type (
+    LoginReq {
+        Email    string `json:"email"`
+        Password string `json:"password"`
+    }
+    LoginResp {
+        AccessToken  string `json:"accessToken"`
+        AccessExpire int64  `json:"accessExpire"`
+        RefreshAfter int64  `json:"refreshAfter"`
+    }
+)
+
+type (
+    UserInfoReq {
+    }
+    UserInfoResp {
+        UserInfo User `json:"userInfo"`
+    }
+)

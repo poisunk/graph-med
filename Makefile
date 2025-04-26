@@ -24,3 +24,13 @@ mcp:
 	cd cmd/mcp && wire
 	go build -o sbin/mcp ./cmd/mcp
 	sbin/mcp run
+
+DOCKER_COMPOSE_FILES = -f docker-compose-env.yml -f docker-compose.yml
+
+.PHONY: clean
+clean:
+	rm -rf data/server
+
+.PHONY: up
+up:
+	docker-compose $(DOCKER_COMPOSE_FILES) up -d

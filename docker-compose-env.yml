@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+
+  redis:
+    image: redis:6.2.5
+    container_name: redis
+    ports:
+      - 6379:6379
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - ./data/redis/data:/data:rw
+    command: "redis-server"
+    privileged: true
+    restart: always
+    networks:
+      - graph_med_net
+
+  neo4j:
+    image: neo4j
+    container_name: neo4j
+    ports:
+      - 7687:7687
+      - 7474:7474
+    environment:
+      NEO4J_AUTH: neo4j/password
+    volumes:
+      - ./data/neo4j/data:/data
+      - ./data/neo4j/logs:/logs
+    command: "neo4j start"
+    privileged: true
+    restart: always
+    networks:
+      - graph_med_net
+
+
+networks:
+  graph_med_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.0.0/16
