@@ -1,0 +1,17 @@
+Name: captcha.rpc
+ListenOn: 0.0.0.0:2002
+Mode: dev
+
+Log:
+  ServiceName: captcha-rpc
+  Level: error
+
+Redis:
+  Host: localhost:6379
+  Key: usercenter-rpc
+
+EmailConfig:
+  Host: smtp.163.com
+  Port: 25
+  Username: 123456789@163.com
+  Password: 123456

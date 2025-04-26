@@ -1,0 +1,43 @@
+syntax = "v1"
+
+type (
+    RotateCaptchaReq {
+    }
+    RotateCaptchaResp {
+        CaptchaId string `json:"captchaId"`
+        ImageBase64 string `json:"imageBase64"`
+        ThumbBase64 string `json:"thumbBase64"`
+        ParentSize  int    `json:"parentSize"`
+        ChildSize   int    `json:"childSize"`
+    }
+)
+
+type (
+    DigitCaptchaReq {
+    }
+    DigitCaptchaResp {
+        CaptchaId string `json:"captchaId"`
+        CaptchaImg string `json:"captchaImg"`
+    }
+)
+
+type (
+    EmailCaptchaReq {
+        Email string `json:"email"`
+    }
+    EmailCaptchaResp {
+        CaptchaId string `json:"captchaId"`
+    }
+)
+
+type (
+    VerifyCaptchaReq {
+        CaptchaType string `json:"captchaType"`
+        CaptchaId string `json:"captchaId"`
+        Answer   string `json:"answer"`
+    }
+
+    VerifyCaptchaResp {
+        Success bool `json:"success"`
+    }
+)

@@ -1,0 +1,14 @@
+Name: captcha
+Host: 0.0.0.0
+Port: 1002
+Mode: dev
+
+Log:
+  ServiceName: usercenter-api
+  Level: error
+
+#rpc service
+CaptchaRpcConf:
+  Endpoints:
+    - 127.0.0.1:2002
+  NonBlock: true

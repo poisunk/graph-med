@@ -1,0 +1,32 @@
+syntax = "v1"
+
+info (
+	title: "验证码服务"
+	desc:  "验证码服务"
+)
+
+import (
+	"captcha/captcha.api"
+)
+
+@server (
+	prefix: captcha/v1
+)
+service captcha {
+	@doc "rotate captcha"
+	@handler rotate
+	post /gen/rotate (RotateCaptchaReq) returns (RotateCaptchaResp)
+
+	@doc "digit captcha"
+	@handler digit
+	post /gen/digit (DigitCaptchaReq) returns (DigitCaptchaResp)
+
+	@doc "email captcha"
+	@handler email
+	post /gen/email (EmailCaptchaReq) returns (EmailCaptchaResp)
+
+	@doc "verify captcha"
+	@handler verify
+	post /verify (VerifyCaptchaReq) returns (VerifyCaptchaResp)
+}
+

@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+option go_package="./pd";
+
+package pd;
+
+
+// rotate
+message RotateCaptchaReq {
+}
+
+message RotateCaptchaResp {
+  string captchaId = 1;
+  string imageBase64 = 2;
+  string thumbBase64 = 3;
+  int32 parentSize = 4;
+  int32 childSize = 5;
+}
+
+// digit
+message DigitCaptchaReq {
+}
+
+message DigitCaptchaResp {
+  string captchaId = 1;
+  string CaptchaImg = 2;
+}
+
+// email
+message EmailCaptchaReq {
+  string email = 1;
+}
+
+message EmailCaptchaResp {
+  string captchaId = 1;
+}
+
+// send email
+message SendEmailCodeReq {
+  string email = 1;
+  string code = 2;
+}
+
+message SendEmailCodeResp {
+  bool success = 1;
+}
+
+// verify
+message VerifyCaptchaReq {
+  string captchaType = 1;
+  string captchaId = 2;
+  string answer = 3;
+}
+
+message VerifyCaptchaResp {
+  bool success = 1;
+}
+
+service Captcha {
+  rpc RotateCaptcha(RotateCaptchaReq) returns(RotateCaptchaResp);
+  rpc DigitCaptcha(DigitCaptchaReq) returns(DigitCaptchaResp);
+  rpc EmailCaptcha(EmailCaptchaReq) returns(EmailCaptchaResp);
+  rpc SendEmailCode(SendEmailCodeReq) returns(SendEmailCodeResp);
+  rpc VerifyCaptcha(VerifyCaptchaReq) returns(VerifyCaptchaResp);
+}
