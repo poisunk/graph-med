@@ -46,7 +46,7 @@ func NewEnforcer(engine *xorm.Engine) (*casbin.Enforcer, error) {
 	}
 
 	// init casbin policy
-	_, err = enf.AddPolicy(NORMAL_USER, "/api/v1/chat/*", "*")
+	_, err = enf.AddPolicy(NORMAL_USER, "/api/v1/api/*", "*")
 	if err != nil {
 		return nil, err
 	}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+
+option go_package="./pd";
+
+package pd;
+
+message CreateChatSessionReq {
+  string userId = 1;
+}
+
+message CreateChatSessionResp {
+  string sessionId = 1;
+  string createdAt = 2;
+}
+
+service Chat {
+  rpc CreateChatSession(CreateChatSessionReq) returns(CreateChatSessionResp);
+}

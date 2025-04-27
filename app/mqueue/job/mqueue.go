@@ -24,7 +24,7 @@ func main() {
 		panic(err)
 	}
 
-	//logx.DisableStat()
+	// logx.DisableStat()
 
 	svcContext := svc.NewServiceContext(c)
 

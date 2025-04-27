@@ -55,7 +55,7 @@ func (c *ChatService) ChatStream(
 	histories []*chatModel.ChatCompletionMessage,
 ) (<-chan string, error) {
 	if !utils.IsValidUUID(chatSessionId) {
-		return nil, fmt.Errorf("invalid chat session id")
+		return nil, fmt.Errorf("invalid api session id")
 	}
 
 	// 创建会话
@@ -124,7 +124,7 @@ func (c *ChatService) ChatStream(
 
 			stream, err := c.client.CreateChatCompletionStream(ctx, req)
 			if err != nil {
-				fmt.Printf("stream chat error: %v\n", err)
+				fmt.Printf("stream api error: %v\n", err)
 				return
 			}
 			defer stream.Close()
@@ -136,7 +136,7 @@ func (c *ChatService) ChatStream(
 					break
 				}
 				if err != nil {
-					fmt.Printf("Stream chat error: %v", err)
+					fmt.Printf("Stream api error: %v", err)
 					return
 				}
 
