@@ -30,7 +30,7 @@ func NewGenerateTokenLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Gen
 func (l *GenerateTokenLogic) GenerateToken(in *pd.GenerateTokenReq) (*pd.GenerateTokenResp, error) {
 	now := time.Now().Unix()
 	accessExpire := l.svcCtx.Config.JwtAuth.AccessExpire
-	accessToken, err := l.getJwtToken(l.svcCtx.Config.JwtAuth.AccessSecret, now, accessExpire, in.Id)
+	accessToken, err := l.getJwtToken(l.svcCtx.Config.JwtAuth.AccessSecret, now, accessExpire, in.UserId)
 	if err != nil {
 		return nil, errors.Wrapf(ErrGenerateTokenError, "getJwtToken err:%v", err)
 	}
@@ -42,7 +42,7 @@ func (l *GenerateTokenLogic) GenerateToken(in *pd.GenerateTokenReq) (*pd.Generat
 	}, nil
 }
 
-func (l *GenerateTokenLogic) getJwtToken(secretKey string, iat, seconds, userId int64) (string, error) {
+func (l *GenerateTokenLogic) getJwtToken(secretKey string, iat, seconds int64, userId string) (string, error) {
 	claims := make(jwt.MapClaims)
 	claims["exp"] = iat + seconds
 	claims["iat"] = iat

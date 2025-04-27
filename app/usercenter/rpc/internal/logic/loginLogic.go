@@ -32,11 +32,11 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(in *pd.LoginReq) (*pd.LoginResp, error) {
-	var id int64
+	var user *model.User
 	var err error
 	switch in.AuthType {
 	case model.UserAuthTypeSystem:
-		id, err = l.loginByEmail(in.AuthKey, in.Password)
+		user, err = l.loginByEmail(in.AuthKey, in.Password)
 	default:
 		return nil, xerr.NewErrCode(xerr.SERVER_COMMON_ERROR)
 	}
@@ -46,7 +46,7 @@ func (l *LoginLogic) Login(in *pd.LoginReq) (*pd.LoginResp, error) {
 
 	generateTokenLogic := NewGenerateTokenLogic(l.ctx, l.svcCtx)
 	tokenResp, err := generateTokenLogic.GenerateToken(&usercenter.GenerateTokenReq{
-		Id: id,
+		UserId: user.UserId,
 	})
 	if err != nil {
 		return nil, errors.Wrapf(ErrGenerateTokenError, "GenerateToken fail")
@@ -59,19 +59,19 @@ func (l *LoginLogic) Login(in *pd.LoginReq) (*pd.LoginResp, error) {
 	}, nil
 }
 
-func (l *LoginLogic) loginByEmail(email, password string) (int64, error) {
+func (l *LoginLogic) loginByEmail(email, password string) (*model.User, error) {
 	user, err := l.svcCtx.UserModel.FindOneByEmail(l.ctx, email)
 	if err != nil && err != model.ErrNotFound {
-		return 0, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "根据邮箱查询用户信息失败，email:%s,err:%v", email, err)
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "根据邮箱查询用户信息失败，email:%s,err:%v", email, err)
 	}
 
 	if user == nil {
-		return 0, errors.Wrapf(ErrUserNoExistsError, "email:%s", email)
+		return nil, errors.Wrapf(ErrUserNoExistsError, "email:%s", email)
 	}
 
 	if !(tool.Md5ByString(password) == user.Password) {
-		return 0, errors.Wrap(ErrUsernamePwdError, "密码匹配出错")
+		return nil, errors.Wrap(ErrUsernamePwdError, "密码匹配出错")
 	}
 
-	return user.Id, nil
+	return user, nil
 }

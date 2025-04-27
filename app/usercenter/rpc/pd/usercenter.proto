@@ -50,7 +50,7 @@ message GetUserInfoResp {
 }
 
 message GenerateTokenReq {
-  int64 id = 1;
+  string userId = 1;
 }
 message GenerateTokenResp {
   string accessToken = 1;
