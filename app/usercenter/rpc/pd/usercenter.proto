@@ -43,7 +43,7 @@ message LoginResp {
 }
 
 message GetUserInfoReq {
-  int64  id = 1;
+  string userId = 1;
 }
 message GetUserInfoResp {
   User user = 1;

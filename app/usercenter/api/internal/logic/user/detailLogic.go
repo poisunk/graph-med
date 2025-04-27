@@ -31,7 +31,7 @@ func (l *DetailLogic) Detail(req *types.UserInfoReq) (resp *types.UserInfoResp, 
 	userId := ctxdata.GetUidFromCtx(l.ctx)
 
 	userInfoResp, err := l.svcCtx.UsercenterRpc.GetUserInfo(l.ctx, &usercenter.GetUserInfoReq{
-		Id: userId,
+		UserId: userId,
 	})
 
 	if err != nil {

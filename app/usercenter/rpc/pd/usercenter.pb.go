@@ -373,7 +373,7 @@ func (x *LoginResp) GetRefreshAfter() int64 {
 
 type GetUserInfoReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=userId,proto3" json:"userId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -408,11 +408,11 @@ func (*GetUserInfoReq) Descriptor() ([]byte, []int) {
 	return file_usercenter_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *GetUserInfoReq) GetId() int64 {
+func (x *GetUserInfoReq) GetUserId() string {
 	if x != nil {
-		return x.Id
+		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 type GetUserInfoResp struct {
@@ -593,9 +593,9 @@ const file_usercenter_proto_rawDesc = "" +
 	"\tLoginResp\x12 \n" +
 	"\vaccessToken\x18\x01 \x01(\tR\vaccessToken\x12\"\n" +
 	"\faccessExpire\x18\x02 \x01(\x03R\faccessExpire\x12\"\n" +
-	"\frefreshAfter\x18\x03 \x01(\x03R\frefreshAfter\" \n" +
-	"\x0eGetUserInfoReq\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"/\n" +
+	"\frefreshAfter\x18\x03 \x01(\x03R\frefreshAfter\"(\n" +
+	"\x0eGetUserInfoReq\x12\x16\n" +
+	"\x06userId\x18\x01 \x01(\tR\x06userId\"/\n" +
 	"\x0fGetUserInfoResp\x12\x1c\n" +
 	"\x04user\x18\x01 \x01(\v2\b.pd.UserR\x04user\"*\n" +
 	"\x10GenerateTokenReq\x12\x16\n" +

@@ -31,12 +31,12 @@ func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 }
 
 func (l *GetUserInfoLogic) GetUserInfo(in *pd.GetUserInfoReq) (*pd.GetUserInfoResp, error) {
-	user, err := l.svcCtx.UserModel.FindOne(l.ctx, in.Id)
+	user, err := l.svcCtx.UserModel.FindOneByUserId(l.ctx, in.UserId)
 	if err != nil && err != model.ErrNotFound {
-		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "GetUserInfo find user db err , id:%d , err:%v", in.Id, err)
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "GetUserInfo find user db err , id:%d , err:%v", in.UserId, err)
 	}
 	if user == nil {
-		return nil, errors.Wrapf(ErrUserNoExistsError, "id:%d", in.Id)
+		return nil, errors.Wrapf(ErrUserNoExistsError, "id:%d", in.UserId)
 	}
 	var respUser usercenter.User
 	_ = copier.Copy(&respUser, user)

@@ -28,7 +28,7 @@ func (m *customUserModel) FindOneByEmail(ctx context.Context, email string) (*Us
 	}
 }
 
-func (m *customUserModel) FindOneByUserId(ctx context.Context, userId int64) (*User, error) {
+func (m *customUserModel) FindOneByUserId(ctx context.Context, userId string) (*User, error) {
 	graphMedUsercenterUserIdKey := fmt.Sprintf("%s%v", cacheGraphMedUsercenterUserIdPrefix, userId)
 	var resp User
 	err := m.QueryRowCtx(ctx, &resp, graphMedUsercenterUserIdKey, func(ctx context.Context, conn sqlx.SqlConn, v any) error {

@@ -14,7 +14,7 @@ type (
 	UserModel interface {
 		userModel
 		FindOneByEmail(ctx context.Context, email string) (*User, error)
-		FindOneByUserId(ctx context.Context, userId int64) (*User, error)
+		FindOneByUserId(ctx context.Context, userId string) (*User, error)
 		Trans(ctx context.Context, fn func(ctx context.Context, session sqlx.Session) error) error
 	}
 
