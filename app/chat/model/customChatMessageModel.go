@@ -45,3 +45,8 @@ func (m *customChatMessageModel) FindOneBySessionIdAndMsgId(ctx context.Context,
 		return nil, err
 	}
 }
+
+func (m *customChatMessageModel) DeleteMessageInSessionWithIds(ctx context.Context, sessionId string, msgIds []int64) error {
+	_, err := m.conn.DeleteMany(ctx, bson.M{"sessionId": sessionId, "messageId": bson.M{"$in": msgIds}})
+	return err
+}

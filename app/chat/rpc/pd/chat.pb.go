@@ -605,11 +605,12 @@ const file_chat_proto_rawDesc = "" +
 	"\tsessionId\x18\x02 \x01(\tR\tsessionId\x12\x1c\n" +
 	"\tmessageId\x18\x03 \x01(\x03R\tmessageId\x12\x1a\n" +
 	"\bfeedback\x18\x04 \x01(\tR\bfeedback\"\x0e\n" +
-	"\fFeedbackResp2\xc2\x01\n" +
+	"\fFeedbackResp2\x85\x02\n" +
 	"\x04Chat\x12H\n" +
 	"\x11CreateChatSession\x12\x18.pd.CreateChatSessionReq\x1a\x19.pd.CreateChatSessionResp\x12A\n" +
 	"\x0eChatCompletion\x12\x15.pd.ChatCompletionReq\x1a\x16.pd.ChatCompletionResp0\x01\x12-\n" +
-	"\bFeedback\x12\x0f.pd.FeedbackReq\x1a\x10.pd.FeedbackRespB\x06Z\x04./pdb\x06proto3"
+	"\bFeedback\x12\x0f.pd.FeedbackReq\x1a\x10.pd.FeedbackResp\x12A\n" +
+	"\x0eRegenerateChat\x12\x15.pd.ChatCompletionReq\x1a\x16.pd.ChatCompletionResp0\x01B\x06Z\x04./pdb\x06proto3"
 
 var (
 	file_chat_proto_rawDescOnce sync.Once
@@ -642,11 +643,13 @@ var file_chat_proto_depIdxs = []int32{
 	0, // 3: pd.Chat.CreateChatSession:input_type -> pd.CreateChatSessionReq
 	2, // 4: pd.Chat.ChatCompletion:input_type -> pd.ChatCompletionReq
 	4, // 5: pd.Chat.Feedback:input_type -> pd.FeedbackReq
-	1, // 6: pd.Chat.CreateChatSession:output_type -> pd.CreateChatSessionResp
-	3, // 7: pd.Chat.ChatCompletion:output_type -> pd.ChatCompletionResp
-	5, // 8: pd.Chat.Feedback:output_type -> pd.FeedbackResp
-	6, // [6:9] is the sub-list for method output_type
-	3, // [3:6] is the sub-list for method input_type
+	2, // 6: pd.Chat.RegenerateChat:input_type -> pd.ChatCompletionReq
+	1, // 7: pd.Chat.CreateChatSession:output_type -> pd.CreateChatSessionResp
+	3, // 8: pd.Chat.ChatCompletion:output_type -> pd.ChatCompletionResp
+	5, // 9: pd.Chat.Feedback:output_type -> pd.FeedbackResp
+	3, // 10: pd.Chat.RegenerateChat:output_type -> pd.ChatCompletionResp
+	7, // [7:11] is the sub-list for method output_type
+	3, // [3:7] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
 	3, // [3:3] is the sub-list for extension extendee
 	0, // [0:3] is the sub-list for field type_name

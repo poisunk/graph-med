@@ -69,4 +69,6 @@ service Chat {
   rpc ChatCompletion(ChatCompletionReq) returns(stream ChatCompletionResp);
   // 对话反馈
   rpc Feedback(FeedbackReq) returns(FeedbackResp);
+  // 重新发起对话
+  rpc RegenerateChat(ChatCompletionReq) returns(stream ChatCompletionResp);
 }

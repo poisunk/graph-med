@@ -7,8 +7,6 @@ import (
 	chatModel "github.com/volcengine/volcengine-go-sdk/service/arkruntime/model"
 	"github.com/volcengine/volcengine-go-sdk/volcengine"
 	"graph-med/app/chat/model"
-	"graph-med/pkg/xerr"
-	"io"
 	"os"
 	"time"
 
@@ -18,17 +16,7 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-var (
-	ErrChatSessionNoExists = xerr.NewErrMsg("聊天会话不存在")
-
-	MessageContentThinkingType     = "thinking"
-	MessageContentTextType         = "text"
-	MessageContentFunctionCallType = "function_call"
-
-	DefaultModelName = "doubao-1-5-lite-32k-250115"
-)
-
-type ChatCompletionLogic struct {
+type RegenerateChatLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 
@@ -37,13 +25,13 @@ type ChatCompletionLogic struct {
 	logx.Logger
 }
 
-func NewChatCompletionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ChatCompletionLogic {
+func NewRegenerateChatLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RegenerateChatLogic {
 	client := arkruntime.NewClientWithApiKey(
 		os.Getenv("LLM_API_KEY"),
 		arkruntime.WithTimeout(30*time.Minute),
 	)
 
-	return &ChatCompletionLogic{
+	return &RegenerateChatLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		client: client,
@@ -51,9 +39,8 @@ func NewChatCompletionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ch
 	}
 }
 
-// ChatCompletion 发起对话
-func (l *ChatCompletionLogic) ChatCompletion(in *pd.ChatCompletionReq, stream pd.Chat_ChatCompletionServer) error {
-
+// 重新发起对话
+func (l *RegenerateChatLogic) RegenerateChat(in *pd.ChatCompletionReq, stream pd.Chat_RegenerateChatServer) error {
 	// 判断session是否存在
 	session, err := l.svcCtx.ChatSessionModel.FindOneBySessionId(l.ctx, in.SessionId)
 	if err != nil {
@@ -91,8 +78,13 @@ func (l *ChatCompletionLogic) ChatCompletion(in *pd.ChatCompletionReq, stream pd
 		return err
 	}
 
+	deleteIds := make([]int64, 0)
 	var histories []*chatModel.ChatCompletionMessage
 	for _, chatHistory := range chatHistories {
+		if chatHistory.MessageId > in.ParentMessageId {
+			deleteIds = append(deleteIds, chatHistory.MessageId)
+			continue
+		}
 		histories = append(histories, &chatModel.ChatCompletionMessage{
 			Role: chatHistory.Role,
 			Content: &chatModel.ChatCompletionMessageContent{
@@ -106,6 +98,12 @@ func (l *ChatCompletionLogic) ChatCompletion(in *pd.ChatCompletionReq, stream pd
 			StringValue: volcengine.String(in.Prompt),
 		},
 	})
+
+	// 删除多余message
+	err = l.svcCtx.ChatMessageModel.DeleteMessageInSessionWithIds(l.ctx, in.SessionId, deleteIds)
+	if err != nil {
+		return err
+	}
 
 	// TODO: MCP
 
@@ -184,132 +182,4 @@ func (l *ChatCompletionLogic) ChatCompletion(in *pd.ChatCompletionReq, stream pd
 			return nil
 		}
 	}
-}
-
-func StartChatStream(
-	ctx context.Context,
-	client *arkruntime.Client,
-	modelName string,
-	histories []*chatModel.ChatCompletionMessage,
-	tools []*chatModel.Tool,
-	resultChan chan<- model.MessageTurn,
-	stopChan chan<- struct{},
-) {
-	content := ""
-
-	resp := model.MessageTurn{
-		Content: "",
-	}
-
-	req := chatModel.ChatCompletionRequest{
-		Model:    modelName,
-		Messages: histories,
-		Tools:    tools,
-	}
-
-	stream, err := client.CreateChatCompletionStream(ctx, req)
-	if err != nil {
-		logx.WithContext(ctx).Errorf("stream api error: %v", err)
-		stopChan <- struct{}{}
-		return
-	}
-	defer stream.Close()
-
-	finalToolCalls := make(map[int]*chatModel.ToolCall)
-	for {
-		recv, err := stream.Recv()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			logx.WithContext(ctx).Errorf("stream api error: %v", err)
-			stopChan <- struct{}{}
-			return
-		}
-
-		if len(recv.Choices) > 0 {
-
-			for _, tool_call := range recv.Choices[0].Delta.ToolCalls {
-				if _, ok := finalToolCalls[*tool_call.Index]; !ok {
-					finalToolCalls[*tool_call.Index] = tool_call
-				}
-				finalToolCalls[*tool_call.Index].Function.Arguments += tool_call.Function.Arguments
-			}
-
-			if recv.Choices[0].Delta.ReasoningContent != nil {
-				resp.Content = *recv.Choices[0].Delta.ReasoningContent
-				resp.Type = MessageContentThinkingType
-				resultChan <- resp
-				content = content + *recv.Choices[0].Delta.ReasoningContent
-			}
-
-			if recv.Choices[0].Delta.Content != "" {
-				resp.Content = recv.Choices[0].Delta.Content
-				resp.Type = MessageContentTextType
-				resultChan <- resp
-				content = content + recv.Choices[0].Delta.Content
-			}
-
-			if recv.Choices[0].FinishReason != "" {
-				if recv.Choices[0].FinishReason == chatModel.FinishReasonToolCalls {
-					// 如果是工具调用
-					toolCalls := make([]*chatModel.ToolCall, len(finalToolCalls))
-					for i, toolCall := range finalToolCalls {
-						toolCalls[i] = toolCall
-					}
-					histories = append(histories, &chatModel.ChatCompletionMessage{
-						Role: chatModel.ChatMessageRoleAssistant,
-						Content: &chatModel.ChatCompletionMessageContent{
-							StringValue: volcengine.String(content),
-						},
-						ToolCalls: toolCalls,
-					})
-
-					// 如果有 处理工具调用
-					for _, toolCall := range finalToolCalls {
-						functionName := toolCall.Function.Name
-						functionArguments := toolCall.Function.Arguments
-						toolCallID := toolCall.ID
-						//l.Logger.WithContext(ctx).Infof("调用工具:%s, %s, %s", functionName, functionArguments, toolCallID)
-						// 调用工具
-						result, err := FunctionCall(ctx, functionName, functionArguments)
-
-						functionCallResult := result
-						if err != nil {
-							functionCallResult = ""
-						}
-						resp.Content = functionCallResult
-						resp.Type = MessageContentFunctionCallType
-						resp.FunctionName = functionName
-						resp.FunctionArgs = functionArguments
-						resultChan <- resp
-						if err != nil {
-							return
-						}
-
-						histories = append(histories, &chatModel.ChatCompletionMessage{
-							Role: chatModel.ChatMessageRoleTool,
-							Content: &chatModel.ChatCompletionMessageContent{
-								StringValue: volcengine.String(result),
-							},
-							Name:       &functionName,
-							ToolCallID: toolCallID,
-						})
-					}
-
-					StartChatStream(ctx, client, modelName, histories, tools, resultChan, stopChan)
-					return
-				}
-				break
-			}
-		}
-	}
-
-	stopChan <- struct{}{}
-	return
-}
-
-func FunctionCall(ctx context.Context, functionName, functionArguments string) (string, error) {
-	// TODO
-	return "", nil
 }

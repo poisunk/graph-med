@@ -40,3 +40,9 @@ func (s *ChatServer) Feedback(ctx context.Context, in *pd.FeedbackReq) (*pd.Feed
 	l := logic.NewFeedbackLogic(ctx, s.svcCtx)
 	return l.Feedback(in)
 }
+
+// 重新发起对话
+func (s *ChatServer) RegenerateChat(in *pd.ChatCompletionReq, stream pd.Chat_RegenerateChatServer) error {
+	l := logic.NewRegenerateChatLogic(stream.Context(), s.svcCtx)
+	return l.RegenerateChat(in, stream)
+}
