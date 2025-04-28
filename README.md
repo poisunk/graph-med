@@ -7,15 +7,16 @@ Graph-Med 是一个基于知识图谱的医疗信息查询和智能问答系统�
 ## 后端技术栈
 
 - **编程语言**：Go 1.23
-- **Web框架**：Gin
+- **微服务框架**：go-zero
 - **数据库**：
-  - MySQL：存储用户数据、聊天记录等关系型数据
-  - Neo4j：存储医疗知识图谱数据
+  - MySQL：存储用户数据等关系型数据
+  - MongoDB：存储聊天记录、会话信息等文档型数据
 - **缓存**：Redis
 - **权限管理**：Casbin
 - **依赖注入**：Wire
 - **MCP服务**：mcp-go
 - **认证授权**：JWT
+- **异步任务队列**：Asynq
 
 ## 大语言模型集成
 
@@ -61,22 +62,34 @@ Graph-Med 是一个基于知识图谱的医疗信息查询和智能问答系统�
 ## 项目结构
 
 ```
-├── cmd                 # 命令行入口
-│   ├── app            # API服务入口
-│   └── mcp            # MCP服务入口
-├── configs            # 配置文件
-├── db                 # 数据库脚本
-├── internal           # 内部包
-│   ├── base           # 基础组件
-│   ├── controller     # 控制器
-│   ├── middleware     # 中间件
-│   ├── model          # 数据模型
-│   ├── repository     # 数据访问层
-│   ├── router         # 路由
-│   ├── schema         # 数据结构
-│   ├── server         # 服务器
-│   ├── service        # 业务逻辑层
-│   └── utils          # 工具函数
-├── script             # 脚本文件
-└── sbin               # 编译后的二进制文件
+├── app                 # 应用服务
+│   ├── captcha         # 验证码服务
+│   │   ├── api        # HTTP API
+│   │   └── rpc        # RPC 服务
+│   ├── chat           # 聊天服务
+│   │   ├── api        # HTTP API
+│   │   ├── model      # 数据模型
+│   │   └── rpc        # RPC 服务
+│   ├── mqueue         # 消息队列服务
+│   │   ├── job        # 任务处理
+│   │   └── scheduler  # 任务调度
+│   └── usercenter     # 用户中心服务
+│       ├── api        # HTTP API
+│       ├── model      # 数据模型
+│       └── rpc        # RPC 服务
+├── data               # 数据文件
+├── deploy             # 部署相关
+│   ├── goctl          # 代码生成工具
+│   ├── nginx          # Nginx配置
+│   ├── script         # 部署脚本
+│   └── sql            # SQL脚本
+├── img                # 图片资源
+├── pkg                # 公共包
+│   ├── ctxdata        # 上下文数据
+│   ├── interceptor    # 拦截器
+│   ├── result         # 响应结果
+│   ├── tool           # 工具函数
+│   └── xerr           # 错误处理
+├── docker-compose.yml # Docker编排配置
+└── Makefile           # 构建脚本
 ```

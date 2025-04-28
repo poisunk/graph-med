@@ -13,5 +13,5 @@ Redis:
 EmailConfig:
   Host: smtp.163.com
   Port: 25
-  username: 19135213825@163.com
-  password: HHhNtNa53BSeBM6i
+  username: 123456789@163.com
+  password: 123456
