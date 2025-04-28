@@ -91,8 +91,13 @@ func (l *ChatCompletionLogic) ChatCompletion(in *pd.ChatCompletionReq, stream pd
 		return err
 	}
 
+	deleteIds := make([]int64, 0)
 	var histories []*chatModel.ChatCompletionMessage
 	for _, chatHistory := range chatHistories {
+		if chatHistory.MessageId > in.ParentMessageId {
+			deleteIds = append(deleteIds, chatHistory.MessageId)
+			continue
+		}
 		histories = append(histories, &chatModel.ChatCompletionMessage{
 			Role: chatHistory.Role,
 			Content: &chatModel.ChatCompletionMessageContent{
@@ -106,6 +111,12 @@ func (l *ChatCompletionLogic) ChatCompletion(in *pd.ChatCompletionReq, stream pd
 			StringValue: volcengine.String(in.Prompt),
 		},
 	})
+
+	// 删除多余message
+	err = l.svcCtx.ChatMessageModel.DeleteMessageInSessionWithIds(l.ctx, in.SessionId, deleteIds)
+	if err != nil {
+		return err
+	}
 
 	// TODO: MCP
 

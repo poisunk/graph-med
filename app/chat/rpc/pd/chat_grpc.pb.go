@@ -22,7 +22,6 @@ const (
 	Chat_CreateChatSession_FullMethodName = "/pd.Chat/CreateChatSession"
 	Chat_ChatCompletion_FullMethodName    = "/pd.Chat/ChatCompletion"
 	Chat_Feedback_FullMethodName          = "/pd.Chat/Feedback"
-	Chat_RegenerateChat_FullMethodName    = "/pd.Chat/RegenerateChat"
 )
 
 // ChatClient is the client API for Chat service.
@@ -35,8 +34,6 @@ type ChatClient interface {
 	ChatCompletion(ctx context.Context, in *ChatCompletionReq, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ChatCompletionResp], error)
 	// 对话反馈
 	Feedback(ctx context.Context, in *FeedbackReq, opts ...grpc.CallOption) (*FeedbackResp, error)
-	// 重新发起对话
-	RegenerateChat(ctx context.Context, in *ChatCompletionReq, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ChatCompletionResp], error)
 }
 
 type chatClient struct {
@@ -86,25 +83,6 @@ func (c *chatClient) Feedback(ctx context.Context, in *FeedbackReq, opts ...grpc
 	return out, nil
 }
 
-func (c *chatClient) RegenerateChat(ctx context.Context, in *ChatCompletionReq, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ChatCompletionResp], error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &Chat_ServiceDesc.Streams[1], Chat_RegenerateChat_FullMethodName, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &grpc.GenericClientStream[ChatCompletionReq, ChatCompletionResp]{ClientStream: stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type Chat_RegenerateChatClient = grpc.ServerStreamingClient[ChatCompletionResp]
-
 // ChatServer is the server API for Chat service.
 // All implementations must embed UnimplementedChatServer
 // for forward compatibility.
@@ -115,8 +93,6 @@ type ChatServer interface {
 	ChatCompletion(*ChatCompletionReq, grpc.ServerStreamingServer[ChatCompletionResp]) error
 	// 对话反馈
 	Feedback(context.Context, *FeedbackReq) (*FeedbackResp, error)
-	// 重新发起对话
-	RegenerateChat(*ChatCompletionReq, grpc.ServerStreamingServer[ChatCompletionResp]) error
 	mustEmbedUnimplementedChatServer()
 }
 
@@ -135,9 +111,6 @@ func (UnimplementedChatServer) ChatCompletion(*ChatCompletionReq, grpc.ServerStr
 }
 func (UnimplementedChatServer) Feedback(context.Context, *FeedbackReq) (*FeedbackResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Feedback not implemented")
-}
-func (UnimplementedChatServer) RegenerateChat(*ChatCompletionReq, grpc.ServerStreamingServer[ChatCompletionResp]) error {
-	return status.Errorf(codes.Unimplemented, "method RegenerateChat not implemented")
 }
 func (UnimplementedChatServer) mustEmbedUnimplementedChatServer() {}
 func (UnimplementedChatServer) testEmbeddedByValue()              {}
@@ -207,17 +180,6 @@ func _Chat_Feedback_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Chat_RegenerateChat_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(ChatCompletionReq)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(ChatServer).RegenerateChat(m, &grpc.GenericServerStream[ChatCompletionReq, ChatCompletionResp]{ServerStream: stream})
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type Chat_RegenerateChatServer = grpc.ServerStreamingServer[ChatCompletionResp]
-
 // Chat_ServiceDesc is the grpc.ServiceDesc for Chat service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -238,11 +200,6 @@ var Chat_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "ChatCompletion",
 			Handler:       _Chat_ChatCompletion_Handler,
-			ServerStreams: true,
-		},
-		{
-			StreamName:    "RegenerateChat",
-			Handler:       _Chat_RegenerateChat_Handler,
 			ServerStreams: true,
 		},
 	},

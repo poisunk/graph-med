@@ -31,8 +31,6 @@ type (
 		ChatCompletion(ctx context.Context, in *ChatCompletionReq, opts ...grpc.CallOption) (pd.Chat_ChatCompletionClient, error)
 		// 对话反馈
 		Feedback(ctx context.Context, in *FeedbackReq, opts ...grpc.CallOption) (*FeedbackResp, error)
-		// 重新发起对话
-		RegenerateChat(ctx context.Context, in *ChatCompletionReq, opts ...grpc.CallOption) (pd.Chat_RegenerateChatClient, error)
 	}
 
 	defaultChat struct {
@@ -62,10 +60,4 @@ func (m *defaultChat) ChatCompletion(ctx context.Context, in *ChatCompletionReq,
 func (m *defaultChat) Feedback(ctx context.Context, in *FeedbackReq, opts ...grpc.CallOption) (*FeedbackResp, error) {
 	client := pd.NewChatClient(m.cli.Conn())
 	return client.Feedback(ctx, in, opts...)
-}
-
-// 重新发起对话
-func (m *defaultChat) RegenerateChat(ctx context.Context, in *ChatCompletionReq, opts ...grpc.CallOption) (pd.Chat_RegenerateChatClient, error) {
-	client := pd.NewChatClient(m.cli.Conn())
-	return client.RegenerateChat(ctx, in, opts...)
 }

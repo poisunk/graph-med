@@ -125,6 +125,7 @@ type ChatCompletionReq struct {
 	SessionId       string                 `protobuf:"bytes,2,opt,name=sessionId,proto3" json:"sessionId,omitempty"`
 	ParentMessageId int64                  `protobuf:"varint,3,opt,name=parentMessageId,proto3" json:"parentMessageId,omitempty"`
 	Prompt          string                 `protobuf:"bytes,4,opt,name=prompt,proto3" json:"prompt,omitempty"`
+	IsRegenerate    bool                   `protobuf:"varint,5,opt,name=isRegenerate,proto3" json:"isRegenerate,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -185,6 +186,13 @@ func (x *ChatCompletionReq) GetPrompt() string {
 		return x.Prompt
 	}
 	return ""
+}
+
+func (x *ChatCompletionReq) GetIsRegenerate() bool {
+	if x != nil {
+		return x.IsRegenerate
+	}
+	return false
 }
 
 type ChatCompletionResp struct {
@@ -574,12 +582,13 @@ const file_chat_proto_rawDesc = "" +
 	"\x06userId\x18\x01 \x01(\tR\x06userId\"S\n" +
 	"\x15CreateChatSessionResp\x12\x1c\n" +
 	"\tsessionId\x18\x01 \x01(\tR\tsessionId\x12\x1c\n" +
-	"\tcreatedAt\x18\x02 \x01(\tR\tcreatedAt\"\x8b\x01\n" +
+	"\tcreatedAt\x18\x02 \x01(\tR\tcreatedAt\"\xaf\x01\n" +
 	"\x11ChatCompletionReq\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\tR\x06userId\x12\x1c\n" +
 	"\tsessionId\x18\x02 \x01(\tR\tsessionId\x12(\n" +
 	"\x0fparentMessageId\x18\x03 \x01(\x03R\x0fparentMessageId\x12\x16\n" +
-	"\x06prompt\x18\x04 \x01(\tR\x06prompt\"\xdc\x04\n" +
+	"\x06prompt\x18\x04 \x01(\tR\x06prompt\x12\"\n" +
+	"\fisRegenerate\x18\x05 \x01(\bR\fisRegenerate\"\xdc\x04\n" +
 	"\x12ChatCompletionResp\x127\n" +
 	"\achoices\x18\x01 \x03(\v2\x1d.pd.ChatCompletionResp.ChoiceR\achoices\x12\x14\n" +
 	"\x05model\x18\x02 \x01(\tR\x05model\x12*\n" +
@@ -605,12 +614,11 @@ const file_chat_proto_rawDesc = "" +
 	"\tsessionId\x18\x02 \x01(\tR\tsessionId\x12\x1c\n" +
 	"\tmessageId\x18\x03 \x01(\x03R\tmessageId\x12\x1a\n" +
 	"\bfeedback\x18\x04 \x01(\tR\bfeedback\"\x0e\n" +
-	"\fFeedbackResp2\x85\x02\n" +
+	"\fFeedbackResp2\xc2\x01\n" +
 	"\x04Chat\x12H\n" +
 	"\x11CreateChatSession\x12\x18.pd.CreateChatSessionReq\x1a\x19.pd.CreateChatSessionResp\x12A\n" +
 	"\x0eChatCompletion\x12\x15.pd.ChatCompletionReq\x1a\x16.pd.ChatCompletionResp0\x01\x12-\n" +
-	"\bFeedback\x12\x0f.pd.FeedbackReq\x1a\x10.pd.FeedbackResp\x12A\n" +
-	"\x0eRegenerateChat\x12\x15.pd.ChatCompletionReq\x1a\x16.pd.ChatCompletionResp0\x01B\x06Z\x04./pdb\x06proto3"
+	"\bFeedback\x12\x0f.pd.FeedbackReq\x1a\x10.pd.FeedbackRespB\x06Z\x04./pdb\x06proto3"
 
 var (
 	file_chat_proto_rawDescOnce sync.Once
@@ -643,13 +651,11 @@ var file_chat_proto_depIdxs = []int32{
 	0, // 3: pd.Chat.CreateChatSession:input_type -> pd.CreateChatSessionReq
 	2, // 4: pd.Chat.ChatCompletion:input_type -> pd.ChatCompletionReq
 	4, // 5: pd.Chat.Feedback:input_type -> pd.FeedbackReq
-	2, // 6: pd.Chat.RegenerateChat:input_type -> pd.ChatCompletionReq
-	1, // 7: pd.Chat.CreateChatSession:output_type -> pd.CreateChatSessionResp
-	3, // 8: pd.Chat.ChatCompletion:output_type -> pd.ChatCompletionResp
-	5, // 9: pd.Chat.Feedback:output_type -> pd.FeedbackResp
-	3, // 10: pd.Chat.RegenerateChat:output_type -> pd.ChatCompletionResp
-	7, // [7:11] is the sub-list for method output_type
-	3, // [3:7] is the sub-list for method input_type
+	1, // 6: pd.Chat.CreateChatSession:output_type -> pd.CreateChatSessionResp
+	3, // 7: pd.Chat.ChatCompletion:output_type -> pd.ChatCompletionResp
+	5, // 8: pd.Chat.Feedback:output_type -> pd.FeedbackResp
+	6, // [6:9] is the sub-list for method output_type
+	3, // [3:6] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
 	3, // [3:3] is the sub-list for extension extendee
 	0, // [0:3] is the sub-list for field type_name

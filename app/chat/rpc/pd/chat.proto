@@ -21,6 +21,7 @@ message ChatCompletionReq {
   string sessionId = 2;
   int64 parentMessageId = 3;
   string prompt = 4;
+  bool isRegenerate = 5;
 }
 
 message ChatCompletionResp {
@@ -69,6 +70,4 @@ service Chat {
   rpc ChatCompletion(ChatCompletionReq) returns(stream ChatCompletionResp);
   // 对话反馈
   rpc Feedback(FeedbackReq) returns(FeedbackResp);
-  // 重新发起对话
-  rpc RegenerateChat(ChatCompletionReq) returns(stream ChatCompletionResp);
 }
