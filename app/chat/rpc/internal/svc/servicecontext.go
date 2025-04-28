@@ -15,6 +15,7 @@ type ServiceContext struct {
 	ChatMessageModel  model.ChatMessageModel
 	ChatTypeModel     model.ChatTypeModel
 	ChatFeedbackModel model.ChatFeedbackModel
+	McpServiceModel   model.McpServiceModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -26,5 +27,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		ChatMessageModel:  model.NewChatMessageModel(c.Mongo.Url, c.Mongo.DB, "ChatMessage"),
 		ChatTypeModel:     model.NewChatTypeModel(c.Mongo.Url, c.Mongo.DB, "ChatType", c.Cache),
 		ChatFeedbackModel: model.NewChatFeedbackModel(c.Mongo.Url, c.Mongo.DB, "ChatFeedback"),
+		McpServiceModel:   model.NewMcpServiceModel(c.Mongo.Url, c.Mongo.DB, "McpService", c.Cache),
 	}
 }
