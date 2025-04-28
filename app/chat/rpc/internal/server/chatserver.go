@@ -23,7 +23,14 @@ func NewChatServer(svcCtx *svc.ServiceContext) *ChatServer {
 	}
 }
 
+// 创建对话session
 func (s *ChatServer) CreateChatSession(ctx context.Context, in *pd.CreateChatSessionReq) (*pd.CreateChatSessionResp, error) {
 	l := logic.NewCreateChatSessionLogic(ctx, s.svcCtx)
 	return l.CreateChatSession(in)
+}
+
+// 发起对话
+func (s *ChatServer) ChatCompletion(in *pd.ChatCompletionReq, stream pd.Chat_ChatCompletionServer) error {
+	l := logic.NewChatCompletionLogic(stream.Context(), s.svcCtx)
+	return l.ChatCompletion(in, stream)
 }

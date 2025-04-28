@@ -21,6 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// CreateChatSession
 type CreateChatSessionReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        string                 `protobuf:"bytes,1,opt,name=userId,proto3" json:"userId,omitempty"`
@@ -117,6 +118,347 @@ func (x *CreateChatSessionResp) GetCreatedAt() string {
 	return ""
 }
 
+// ChatCompletion
+type ChatCompletionReq struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	UserId          string                 `protobuf:"bytes,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	SessionId       string                 `protobuf:"bytes,2,opt,name=sessionId,proto3" json:"sessionId,omitempty"`
+	ParentMessageId int64                  `protobuf:"varint,3,opt,name=parentMessageId,proto3" json:"parentMessageId,omitempty"`
+	Prompt          string                 `protobuf:"bytes,4,opt,name=prompt,proto3" json:"prompt,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *ChatCompletionReq) Reset() {
+	*x = ChatCompletionReq{}
+	mi := &file_chat_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatCompletionReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatCompletionReq) ProtoMessage() {}
+
+func (x *ChatCompletionReq) ProtoReflect() protoreflect.Message {
+	mi := &file_chat_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatCompletionReq.ProtoReflect.Descriptor instead.
+func (*ChatCompletionReq) Descriptor() ([]byte, []int) {
+	return file_chat_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *ChatCompletionReq) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *ChatCompletionReq) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *ChatCompletionReq) GetParentMessageId() int64 {
+	if x != nil {
+		return x.ParentMessageId
+	}
+	return 0
+}
+
+func (x *ChatCompletionReq) GetPrompt() string {
+	if x != nil {
+		return x.Prompt
+	}
+	return ""
+}
+
+type ChatCompletionResp struct {
+	state            protoimpl.MessageState       `protogen:"open.v1"`
+	Choices          []*ChatCompletionResp_Choice `protobuf:"bytes,1,rep,name=choices,proto3" json:"choices,omitempty"`
+	Model            string                       `protobuf:"bytes,2,opt,name=model,proto3" json:"model,omitempty"`
+	PromptTokenUsage int64                        `protobuf:"varint,3,opt,name=promptTokenUsage,proto3" json:"promptTokenUsage,omitempty"`
+	ChunkTokenUsage  int64                        `protobuf:"varint,4,opt,name=chunkTokenUsage,proto3" json:"chunkTokenUsage,omitempty"`
+	Created          int64                        `protobuf:"varint,5,opt,name=created,proto3" json:"created,omitempty"`
+	MessageId        int64                        `protobuf:"varint,6,opt,name=messageId,proto3" json:"messageId,omitempty"`
+	ParentId         int64                        `protobuf:"varint,7,opt,name=parentId,proto3" json:"parentId,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *ChatCompletionResp) Reset() {
+	*x = ChatCompletionResp{}
+	mi := &file_chat_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatCompletionResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatCompletionResp) ProtoMessage() {}
+
+func (x *ChatCompletionResp) ProtoReflect() protoreflect.Message {
+	mi := &file_chat_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatCompletionResp.ProtoReflect.Descriptor instead.
+func (*ChatCompletionResp) Descriptor() ([]byte, []int) {
+	return file_chat_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ChatCompletionResp) GetChoices() []*ChatCompletionResp_Choice {
+	if x != nil {
+		return x.Choices
+	}
+	return nil
+}
+
+func (x *ChatCompletionResp) GetModel() string {
+	if x != nil {
+		return x.Model
+	}
+	return ""
+}
+
+func (x *ChatCompletionResp) GetPromptTokenUsage() int64 {
+	if x != nil {
+		return x.PromptTokenUsage
+	}
+	return 0
+}
+
+func (x *ChatCompletionResp) GetChunkTokenUsage() int64 {
+	if x != nil {
+		return x.ChunkTokenUsage
+	}
+	return 0
+}
+
+func (x *ChatCompletionResp) GetCreated() int64 {
+	if x != nil {
+		return x.Created
+	}
+	return 0
+}
+
+func (x *ChatCompletionResp) GetMessageId() int64 {
+	if x != nil {
+		return x.MessageId
+	}
+	return 0
+}
+
+func (x *ChatCompletionResp) GetParentId() int64 {
+	if x != nil {
+		return x.ParentId
+	}
+	return 0
+}
+
+type ChatCompletionResp_Choice struct {
+	state         protoimpl.MessageState                `protogen:"open.v1"`
+	Index         int64                                 `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
+	Delta         *ChatCompletionResp_Choice_Delta      `protobuf:"bytes,2,opt,name=delta,proto3" json:"delta,omitempty"`
+	FinishReason  string                                `protobuf:"bytes,3,opt,name=finishReason,proto3" json:"finishReason,omitempty"`
+	ToolCalls     []*ChatCompletionResp_Choice_ToolCall `protobuf:"bytes,4,rep,name=toolCalls,proto3" json:"toolCalls,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChatCompletionResp_Choice) Reset() {
+	*x = ChatCompletionResp_Choice{}
+	mi := &file_chat_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatCompletionResp_Choice) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatCompletionResp_Choice) ProtoMessage() {}
+
+func (x *ChatCompletionResp_Choice) ProtoReflect() protoreflect.Message {
+	mi := &file_chat_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatCompletionResp_Choice.ProtoReflect.Descriptor instead.
+func (*ChatCompletionResp_Choice) Descriptor() ([]byte, []int) {
+	return file_chat_proto_rawDescGZIP(), []int{3, 0}
+}
+
+func (x *ChatCompletionResp_Choice) GetIndex() int64 {
+	if x != nil {
+		return x.Index
+	}
+	return 0
+}
+
+func (x *ChatCompletionResp_Choice) GetDelta() *ChatCompletionResp_Choice_Delta {
+	if x != nil {
+		return x.Delta
+	}
+	return nil
+}
+
+func (x *ChatCompletionResp_Choice) GetFinishReason() string {
+	if x != nil {
+		return x.FinishReason
+	}
+	return ""
+}
+
+func (x *ChatCompletionResp_Choice) GetToolCalls() []*ChatCompletionResp_Choice_ToolCall {
+	if x != nil {
+		return x.ToolCalls
+	}
+	return nil
+}
+
+type ChatCompletionResp_Choice_Delta struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Role          string                 `protobuf:"bytes,1,opt,name=role,proto3" json:"role,omitempty"`
+	Content       string                 `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
+	Type          string                 `protobuf:"bytes,3,opt,name=type,proto3" json:"type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChatCompletionResp_Choice_Delta) Reset() {
+	*x = ChatCompletionResp_Choice_Delta{}
+	mi := &file_chat_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatCompletionResp_Choice_Delta) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatCompletionResp_Choice_Delta) ProtoMessage() {}
+
+func (x *ChatCompletionResp_Choice_Delta) ProtoReflect() protoreflect.Message {
+	mi := &file_chat_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatCompletionResp_Choice_Delta.ProtoReflect.Descriptor instead.
+func (*ChatCompletionResp_Choice_Delta) Descriptor() ([]byte, []int) {
+	return file_chat_proto_rawDescGZIP(), []int{3, 0, 0}
+}
+
+func (x *ChatCompletionResp_Choice_Delta) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
+func (x *ChatCompletionResp_Choice_Delta) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+func (x *ChatCompletionResp_Choice_Delta) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+type ChatCompletionResp_Choice_ToolCall struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Arguments     string                 `protobuf:"bytes,2,opt,name=arguments,proto3" json:"arguments,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChatCompletionResp_Choice_ToolCall) Reset() {
+	*x = ChatCompletionResp_Choice_ToolCall{}
+	mi := &file_chat_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatCompletionResp_Choice_ToolCall) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatCompletionResp_Choice_ToolCall) ProtoMessage() {}
+
+func (x *ChatCompletionResp_Choice_ToolCall) ProtoReflect() protoreflect.Message {
+	mi := &file_chat_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatCompletionResp_Choice_ToolCall.ProtoReflect.Descriptor instead.
+func (*ChatCompletionResp_Choice_ToolCall) Descriptor() ([]byte, []int) {
+	return file_chat_proto_rawDescGZIP(), []int{3, 0, 1}
+}
+
+func (x *ChatCompletionResp_Choice_ToolCall) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *ChatCompletionResp_Choice_ToolCall) GetArguments() string {
+	if x != nil {
+		return x.Arguments
+	}
+	return ""
+}
+
 var File_chat_proto protoreflect.FileDescriptor
 
 const file_chat_proto_rawDesc = "" +
@@ -127,9 +469,35 @@ const file_chat_proto_rawDesc = "" +
 	"\x06userId\x18\x01 \x01(\tR\x06userId\"S\n" +
 	"\x15CreateChatSessionResp\x12\x1c\n" +
 	"\tsessionId\x18\x01 \x01(\tR\tsessionId\x12\x1c\n" +
-	"\tcreatedAt\x18\x02 \x01(\tR\tcreatedAt2P\n" +
+	"\tcreatedAt\x18\x02 \x01(\tR\tcreatedAt\"\x8b\x01\n" +
+	"\x11ChatCompletionReq\x12\x16\n" +
+	"\x06userId\x18\x01 \x01(\tR\x06userId\x12\x1c\n" +
+	"\tsessionId\x18\x02 \x01(\tR\tsessionId\x12(\n" +
+	"\x0fparentMessageId\x18\x03 \x01(\x03R\x0fparentMessageId\x12\x16\n" +
+	"\x06prompt\x18\x04 \x01(\tR\x06prompt\"\xdc\x04\n" +
+	"\x12ChatCompletionResp\x127\n" +
+	"\achoices\x18\x01 \x03(\v2\x1d.pd.ChatCompletionResp.ChoiceR\achoices\x12\x14\n" +
+	"\x05model\x18\x02 \x01(\tR\x05model\x12*\n" +
+	"\x10promptTokenUsage\x18\x03 \x01(\x03R\x10promptTokenUsage\x12(\n" +
+	"\x0fchunkTokenUsage\x18\x04 \x01(\x03R\x0fchunkTokenUsage\x12\x18\n" +
+	"\acreated\x18\x05 \x01(\x03R\acreated\x12\x1c\n" +
+	"\tmessageId\x18\x06 \x01(\x03R\tmessageId\x12\x1a\n" +
+	"\bparentId\x18\a \x01(\x03R\bparentId\x1a\xcc\x02\n" +
+	"\x06Choice\x12\x14\n" +
+	"\x05index\x18\x01 \x01(\x03R\x05index\x129\n" +
+	"\x05delta\x18\x02 \x01(\v2#.pd.ChatCompletionResp.Choice.DeltaR\x05delta\x12\"\n" +
+	"\ffinishReason\x18\x03 \x01(\tR\ffinishReason\x12D\n" +
+	"\ttoolCalls\x18\x04 \x03(\v2&.pd.ChatCompletionResp.Choice.ToolCallR\ttoolCalls\x1aI\n" +
+	"\x05Delta\x12\x12\n" +
+	"\x04role\x18\x01 \x01(\tR\x04role\x12\x18\n" +
+	"\acontent\x18\x02 \x01(\tR\acontent\x12\x12\n" +
+	"\x04type\x18\x03 \x01(\tR\x04type\x1a<\n" +
+	"\bToolCall\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1c\n" +
+	"\targuments\x18\x02 \x01(\tR\targuments2\x93\x01\n" +
 	"\x04Chat\x12H\n" +
-	"\x11CreateChatSession\x12\x18.pd.CreateChatSessionReq\x1a\x19.pd.CreateChatSessionRespB\x06Z\x04./pdb\x06proto3"
+	"\x11CreateChatSession\x12\x18.pd.CreateChatSessionReq\x1a\x19.pd.CreateChatSessionResp\x12A\n" +
+	"\x0eChatCompletion\x12\x15.pd.ChatCompletionReq\x1a\x16.pd.ChatCompletionResp0\x01B\x06Z\x04./pdb\x06proto3"
 
 var (
 	file_chat_proto_rawDescOnce sync.Once
@@ -143,19 +511,29 @@ func file_chat_proto_rawDescGZIP() []byte {
 	return file_chat_proto_rawDescData
 }
 
-var file_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_chat_proto_goTypes = []any{
-	(*CreateChatSessionReq)(nil),  // 0: pd.CreateChatSessionReq
-	(*CreateChatSessionResp)(nil), // 1: pd.CreateChatSessionResp
+	(*CreateChatSessionReq)(nil),               // 0: pd.CreateChatSessionReq
+	(*CreateChatSessionResp)(nil),              // 1: pd.CreateChatSessionResp
+	(*ChatCompletionReq)(nil),                  // 2: pd.ChatCompletionReq
+	(*ChatCompletionResp)(nil),                 // 3: pd.ChatCompletionResp
+	(*ChatCompletionResp_Choice)(nil),          // 4: pd.ChatCompletionResp.Choice
+	(*ChatCompletionResp_Choice_Delta)(nil),    // 5: pd.ChatCompletionResp.Choice.Delta
+	(*ChatCompletionResp_Choice_ToolCall)(nil), // 6: pd.ChatCompletionResp.Choice.ToolCall
 }
 var file_chat_proto_depIdxs = []int32{
-	0, // 0: pd.Chat.CreateChatSession:input_type -> pd.CreateChatSessionReq
-	1, // 1: pd.Chat.CreateChatSession:output_type -> pd.CreateChatSessionResp
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	4, // 0: pd.ChatCompletionResp.choices:type_name -> pd.ChatCompletionResp.Choice
+	5, // 1: pd.ChatCompletionResp.Choice.delta:type_name -> pd.ChatCompletionResp.Choice.Delta
+	6, // 2: pd.ChatCompletionResp.Choice.toolCalls:type_name -> pd.ChatCompletionResp.Choice.ToolCall
+	0, // 3: pd.Chat.CreateChatSession:input_type -> pd.CreateChatSessionReq
+	2, // 4: pd.Chat.ChatCompletion:input_type -> pd.ChatCompletionReq
+	1, // 5: pd.Chat.CreateChatSession:output_type -> pd.CreateChatSessionResp
+	3, // 6: pd.Chat.ChatCompletion:output_type -> pd.ChatCompletionResp
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_chat_proto_init() }
@@ -169,7 +547,7 @@ func file_chat_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_chat_proto_rawDesc), len(file_chat_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

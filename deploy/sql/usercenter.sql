@@ -14,8 +14,7 @@ CREATE TABLE `user` (
     `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `deleted_at` datetime DEFAULT NULL,
     PRIMARY KEY (`id`),
-    INDEX `idx_user_id` (`user_id`),
-    INDEX `idx_nickname` (`nickname`),
-    INDEX `idx_email` (`email`),
-    INDEX `idx_mobile` (`mobile`)
+    UNIQUE KEY `idx_user_id` (`user_id`),
+    UNIQUE KEY `idx_email` (`email`),
+    UNIQUE KEY `idx_mobile` (`mobile`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='用户表';

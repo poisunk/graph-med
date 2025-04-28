@@ -14,11 +14,19 @@ import (
 )
 
 type (
-	CreateChatSessionReq  = pd.CreateChatSessionReq
-	CreateChatSessionResp = pd.CreateChatSessionResp
+	ChatCompletionReq                  = pd.ChatCompletionReq
+	ChatCompletionResp                 = pd.ChatCompletionResp
+	ChatCompletionResp_Choice          = pd.ChatCompletionResp_Choice
+	ChatCompletionResp_Choice_Delta    = pd.ChatCompletionResp_Choice_Delta
+	ChatCompletionResp_Choice_ToolCall = pd.ChatCompletionResp_Choice_ToolCall
+	CreateChatSessionReq               = pd.CreateChatSessionReq
+	CreateChatSessionResp              = pd.CreateChatSessionResp
 
 	Chat interface {
+		// 创建对话session
 		CreateChatSession(ctx context.Context, in *CreateChatSessionReq, opts ...grpc.CallOption) (*CreateChatSessionResp, error)
+		// 发起对话
+		ChatCompletion(ctx context.Context, in *ChatCompletionReq, opts ...grpc.CallOption) (pd.Chat_ChatCompletionClient, error)
 	}
 
 	defaultChat struct {
@@ -32,7 +40,14 @@ func NewChat(cli zrpc.Client) Chat {
 	}
 }
 
+// 创建对话session
 func (m *defaultChat) CreateChatSession(ctx context.Context, in *CreateChatSessionReq, opts ...grpc.CallOption) (*CreateChatSessionResp, error) {
 	client := pd.NewChatClient(m.cli.Conn())
 	return client.CreateChatSession(ctx, in, opts...)
+}
+
+// 发起对话
+func (m *defaultChat) ChatCompletion(ctx context.Context, in *ChatCompletionReq, opts ...grpc.CallOption) (pd.Chat_ChatCompletionClient, error) {
+	client := pd.NewChatClient(m.cli.Conn())
+	return client.ChatCompletion(ctx, in, opts...)
 }

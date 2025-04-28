@@ -1,6 +1,16 @@
 Name: rpc.rpc
-ListenOn: 0.0.0.0:8080
-Etcd:
-  Hosts:
-  - 127.0.0.1:2379
-  Key: rpc.rpc
+ListenOn: 0.0.0.0:2003
+Mode: dev
+
+Log:
+  ServiceName: usercenter-rpc
+  Level: error
+
+Redis:
+  Host: localhost:6379
+  Key: chat-rpc
+Mongo:
+  Url: mongodb://localhost:27017
+  DB: graph_med_chat
+Cache:
+  - Host: localhost:6379

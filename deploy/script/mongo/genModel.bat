@@ -1,0 +1,1 @@
+goctl model mongo --type * --dir ./model

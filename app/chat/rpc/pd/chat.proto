@@ -5,6 +5,7 @@ option go_package="./pd";
 
 package pd;
 
+// CreateChatSession
 message CreateChatSessionReq {
   string userId = 1;
 }
@@ -14,6 +15,45 @@ message CreateChatSessionResp {
   string createdAt = 2;
 }
 
+// ChatCompletion
+message ChatCompletionReq {
+  string userId = 1;
+  string sessionId = 2;
+  int64 parentMessageId = 3;
+  string prompt = 4;
+}
+
+message ChatCompletionResp {
+  message Choice {
+    int64 index = 1;
+
+    message Delta {
+      string role = 1;
+      string content = 2;
+      string type = 3;
+    }
+    Delta delta = 2;
+
+    string finishReason = 3;
+
+    message ToolCall {
+      string name = 1;
+      string arguments = 2;
+    }
+    repeated ToolCall toolCalls = 4;
+  }
+  repeated Choice choices = 1;
+  string model = 2;
+  int64 promptTokenUsage = 3;
+  int64 chunkTokenUsage = 4;
+  int64 created = 5;
+  int64 messageId = 6;
+  int64 parentId = 7;
+}
+
 service Chat {
+  // 创建对话session
   rpc CreateChatSession(CreateChatSessionReq) returns(CreateChatSessionResp);
+  // 发起对话
+  rpc ChatCompletion(ChatCompletionReq) returns(stream ChatCompletionResp);
 }
