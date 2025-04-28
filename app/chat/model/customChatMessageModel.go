@@ -31,3 +31,17 @@ func (m *customChatMessageModel) InsertAll(ctx context.Context, messages []*Chat
 
 	return err
 }
+
+func (m *customChatMessageModel) FindOneBySessionIdAndMsgId(ctx context.Context, sessionId string, msgId int64) (*ChatMessage, error) {
+	var data ChatMessage
+
+	err := m.conn.FindOne(ctx, &data, bson.M{"sessionId": sessionId, "messageId": msgId})
+	switch err {
+	case nil:
+		return &data, nil
+	case mon.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}

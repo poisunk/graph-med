@@ -279,6 +279,111 @@ func (x *ChatCompletionResp) GetParentId() int64 {
 	return 0
 }
 
+// Feedback
+type FeedbackReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	SessionId     string                 `protobuf:"bytes,2,opt,name=sessionId,proto3" json:"sessionId,omitempty"`
+	MessageId     int64                  `protobuf:"varint,3,opt,name=messageId,proto3" json:"messageId,omitempty"`
+	Feedback      string                 `protobuf:"bytes,4,opt,name=feedback,proto3" json:"feedback,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FeedbackReq) Reset() {
+	*x = FeedbackReq{}
+	mi := &file_chat_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FeedbackReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FeedbackReq) ProtoMessage() {}
+
+func (x *FeedbackReq) ProtoReflect() protoreflect.Message {
+	mi := &file_chat_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FeedbackReq.ProtoReflect.Descriptor instead.
+func (*FeedbackReq) Descriptor() ([]byte, []int) {
+	return file_chat_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *FeedbackReq) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *FeedbackReq) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *FeedbackReq) GetMessageId() int64 {
+	if x != nil {
+		return x.MessageId
+	}
+	return 0
+}
+
+func (x *FeedbackReq) GetFeedback() string {
+	if x != nil {
+		return x.Feedback
+	}
+	return ""
+}
+
+type FeedbackResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FeedbackResp) Reset() {
+	*x = FeedbackResp{}
+	mi := &file_chat_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FeedbackResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FeedbackResp) ProtoMessage() {}
+
+func (x *FeedbackResp) ProtoReflect() protoreflect.Message {
+	mi := &file_chat_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FeedbackResp.ProtoReflect.Descriptor instead.
+func (*FeedbackResp) Descriptor() ([]byte, []int) {
+	return file_chat_proto_rawDescGZIP(), []int{5}
+}
+
 type ChatCompletionResp_Choice struct {
 	state         protoimpl.MessageState                `protogen:"open.v1"`
 	Index         int64                                 `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
@@ -291,7 +396,7 @@ type ChatCompletionResp_Choice struct {
 
 func (x *ChatCompletionResp_Choice) Reset() {
 	*x = ChatCompletionResp_Choice{}
-	mi := &file_chat_proto_msgTypes[4]
+	mi := &file_chat_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -303,7 +408,7 @@ func (x *ChatCompletionResp_Choice) String() string {
 func (*ChatCompletionResp_Choice) ProtoMessage() {}
 
 func (x *ChatCompletionResp_Choice) ProtoReflect() protoreflect.Message {
-	mi := &file_chat_proto_msgTypes[4]
+	mi := &file_chat_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -358,7 +463,7 @@ type ChatCompletionResp_Choice_Delta struct {
 
 func (x *ChatCompletionResp_Choice_Delta) Reset() {
 	*x = ChatCompletionResp_Choice_Delta{}
-	mi := &file_chat_proto_msgTypes[5]
+	mi := &file_chat_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -370,7 +475,7 @@ func (x *ChatCompletionResp_Choice_Delta) String() string {
 func (*ChatCompletionResp_Choice_Delta) ProtoMessage() {}
 
 func (x *ChatCompletionResp_Choice_Delta) ProtoReflect() protoreflect.Message {
-	mi := &file_chat_proto_msgTypes[5]
+	mi := &file_chat_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -417,7 +522,7 @@ type ChatCompletionResp_Choice_ToolCall struct {
 
 func (x *ChatCompletionResp_Choice_ToolCall) Reset() {
 	*x = ChatCompletionResp_Choice_ToolCall{}
-	mi := &file_chat_proto_msgTypes[6]
+	mi := &file_chat_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -429,7 +534,7 @@ func (x *ChatCompletionResp_Choice_ToolCall) String() string {
 func (*ChatCompletionResp_Choice_ToolCall) ProtoMessage() {}
 
 func (x *ChatCompletionResp_Choice_ToolCall) ProtoReflect() protoreflect.Message {
-	mi := &file_chat_proto_msgTypes[6]
+	mi := &file_chat_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -494,10 +599,17 @@ const file_chat_proto_rawDesc = "" +
 	"\x04type\x18\x03 \x01(\tR\x04type\x1a<\n" +
 	"\bToolCall\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1c\n" +
-	"\targuments\x18\x02 \x01(\tR\targuments2\x93\x01\n" +
+	"\targuments\x18\x02 \x01(\tR\targuments\"}\n" +
+	"\vFeedbackReq\x12\x16\n" +
+	"\x06userId\x18\x01 \x01(\tR\x06userId\x12\x1c\n" +
+	"\tsessionId\x18\x02 \x01(\tR\tsessionId\x12\x1c\n" +
+	"\tmessageId\x18\x03 \x01(\x03R\tmessageId\x12\x1a\n" +
+	"\bfeedback\x18\x04 \x01(\tR\bfeedback\"\x0e\n" +
+	"\fFeedbackResp2\xc2\x01\n" +
 	"\x04Chat\x12H\n" +
 	"\x11CreateChatSession\x12\x18.pd.CreateChatSessionReq\x1a\x19.pd.CreateChatSessionResp\x12A\n" +
-	"\x0eChatCompletion\x12\x15.pd.ChatCompletionReq\x1a\x16.pd.ChatCompletionResp0\x01B\x06Z\x04./pdb\x06proto3"
+	"\x0eChatCompletion\x12\x15.pd.ChatCompletionReq\x1a\x16.pd.ChatCompletionResp0\x01\x12-\n" +
+	"\bFeedback\x12\x0f.pd.FeedbackReq\x1a\x10.pd.FeedbackRespB\x06Z\x04./pdb\x06proto3"
 
 var (
 	file_chat_proto_rawDescOnce sync.Once
@@ -511,26 +623,30 @@ func file_chat_proto_rawDescGZIP() []byte {
 	return file_chat_proto_rawDescData
 }
 
-var file_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_chat_proto_goTypes = []any{
 	(*CreateChatSessionReq)(nil),               // 0: pd.CreateChatSessionReq
 	(*CreateChatSessionResp)(nil),              // 1: pd.CreateChatSessionResp
 	(*ChatCompletionReq)(nil),                  // 2: pd.ChatCompletionReq
 	(*ChatCompletionResp)(nil),                 // 3: pd.ChatCompletionResp
-	(*ChatCompletionResp_Choice)(nil),          // 4: pd.ChatCompletionResp.Choice
-	(*ChatCompletionResp_Choice_Delta)(nil),    // 5: pd.ChatCompletionResp.Choice.Delta
-	(*ChatCompletionResp_Choice_ToolCall)(nil), // 6: pd.ChatCompletionResp.Choice.ToolCall
+	(*FeedbackReq)(nil),                        // 4: pd.FeedbackReq
+	(*FeedbackResp)(nil),                       // 5: pd.FeedbackResp
+	(*ChatCompletionResp_Choice)(nil),          // 6: pd.ChatCompletionResp.Choice
+	(*ChatCompletionResp_Choice_Delta)(nil),    // 7: pd.ChatCompletionResp.Choice.Delta
+	(*ChatCompletionResp_Choice_ToolCall)(nil), // 8: pd.ChatCompletionResp.Choice.ToolCall
 }
 var file_chat_proto_depIdxs = []int32{
-	4, // 0: pd.ChatCompletionResp.choices:type_name -> pd.ChatCompletionResp.Choice
-	5, // 1: pd.ChatCompletionResp.Choice.delta:type_name -> pd.ChatCompletionResp.Choice.Delta
-	6, // 2: pd.ChatCompletionResp.Choice.toolCalls:type_name -> pd.ChatCompletionResp.Choice.ToolCall
+	6, // 0: pd.ChatCompletionResp.choices:type_name -> pd.ChatCompletionResp.Choice
+	7, // 1: pd.ChatCompletionResp.Choice.delta:type_name -> pd.ChatCompletionResp.Choice.Delta
+	8, // 2: pd.ChatCompletionResp.Choice.toolCalls:type_name -> pd.ChatCompletionResp.Choice.ToolCall
 	0, // 3: pd.Chat.CreateChatSession:input_type -> pd.CreateChatSessionReq
 	2, // 4: pd.Chat.ChatCompletion:input_type -> pd.ChatCompletionReq
-	1, // 5: pd.Chat.CreateChatSession:output_type -> pd.CreateChatSessionResp
-	3, // 6: pd.Chat.ChatCompletion:output_type -> pd.ChatCompletionResp
-	5, // [5:7] is the sub-list for method output_type
-	3, // [3:5] is the sub-list for method input_type
+	4, // 5: pd.Chat.Feedback:input_type -> pd.FeedbackReq
+	1, // 6: pd.Chat.CreateChatSession:output_type -> pd.CreateChatSessionResp
+	3, // 7: pd.Chat.ChatCompletion:output_type -> pd.ChatCompletionResp
+	5, // 8: pd.Chat.Feedback:output_type -> pd.FeedbackResp
+	6, // [6:9] is the sub-list for method output_type
+	3, // [3:6] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
 	3, // [3:3] is the sub-list for extension extendee
 	0, // [0:3] is the sub-list for field type_name
@@ -547,7 +663,7 @@ func file_chat_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_chat_proto_rawDesc), len(file_chat_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -51,9 +51,22 @@ message ChatCompletionResp {
   int64 parentId = 7;
 }
 
+// Feedback
+message FeedbackReq {
+  string userId = 1;
+  string sessionId = 2;
+  int64 messageId = 3;
+  string feedback = 4;
+}
+
+message FeedbackResp {
+}
+
 service Chat {
   // 创建对话session
   rpc CreateChatSession(CreateChatSessionReq) returns(CreateChatSessionResp);
   // 发起对话
   rpc ChatCompletion(ChatCompletionReq) returns(stream ChatCompletionResp);
+  // 对话反馈
+  rpc Feedback(FeedbackReq) returns(FeedbackResp);
 }

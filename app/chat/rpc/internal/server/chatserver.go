@@ -34,3 +34,9 @@ func (s *ChatServer) ChatCompletion(in *pd.ChatCompletionReq, stream pd.Chat_Cha
 	l := logic.NewChatCompletionLogic(stream.Context(), s.svcCtx)
 	return l.ChatCompletion(in, stream)
 }
+
+// 对话反馈
+func (s *ChatServer) Feedback(ctx context.Context, in *pd.FeedbackReq) (*pd.FeedbackResp, error) {
+	l := logic.NewFeedbackLogic(ctx, s.svcCtx)
+	return l.Feedback(in)
+}

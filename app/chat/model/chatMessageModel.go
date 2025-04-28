@@ -14,6 +14,7 @@ type (
 		chatMessageModel
 		FindAllBySessionId(ctx context.Context, sessionId string) ([]*ChatMessage, error)
 		InsertAll(ctx context.Context, messages []*ChatMessage) error
+		FindOneBySessionIdAndMsgId(ctx context.Context, sessionId string, msgId int64) (*ChatMessage, error)
 	}
 
 	customChatMessageModel struct {

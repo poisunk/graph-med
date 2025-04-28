@@ -13,22 +13,22 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type chatTypeModel interface {
-	Insert(ctx context.Context, data *ChatType) error
-	FindOne(ctx context.Context, id string) (*ChatType, error)
-	Update(ctx context.Context, data *ChatType) (*mongo.UpdateResult, error)
+type chatFeedbackModel interface {
+	Insert(ctx context.Context, data *ChatFeedback) error
+	FindOne(ctx context.Context, id string) (*ChatFeedback, error)
+	Update(ctx context.Context, data *ChatFeedback) (*mongo.UpdateResult, error)
 	Delete(ctx context.Context, id string) (int64, error)
 }
 
-type defaultChatTypeModel struct {
+type defaultChatFeedbackModel struct {
 	conn *mon.Model
 }
 
-func newDefaultChatTypeModel(conn *mon.Model) *defaultChatTypeModel {
-	return &defaultChatTypeModel{conn: conn}
+func newDefaultChatFeedbackModel(conn *mon.Model) *defaultChatFeedbackModel {
+	return &defaultChatFeedbackModel{conn: conn}
 }
 
-func (m *defaultChatTypeModel) Insert(ctx context.Context, data *ChatType) error {
+func (m *defaultChatFeedbackModel) Insert(ctx context.Context, data *ChatFeedback) error {
 	if data.ID.IsZero() {
 		data.ID = primitive.NewObjectID()
 		data.CreateAt = time.Now()
@@ -39,13 +39,13 @@ func (m *defaultChatTypeModel) Insert(ctx context.Context, data *ChatType) error
 	return err
 }
 
-func (m *defaultChatTypeModel) FindOne(ctx context.Context, id string) (*ChatType, error) {
+func (m *defaultChatFeedbackModel) FindOne(ctx context.Context, id string) (*ChatFeedback, error) {
 	oid, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, ErrInvalidObjectId
 	}
 
-	var data ChatType
+	var data ChatFeedback
 
 	err = m.conn.FindOne(ctx, &data, bson.M{"_id": oid})
 	switch err {
@@ -58,14 +58,14 @@ func (m *defaultChatTypeModel) FindOne(ctx context.Context, id string) (*ChatTyp
 	}
 }
 
-func (m *defaultChatTypeModel) Update(ctx context.Context, data *ChatType) (*mongo.UpdateResult, error) {
+func (m *defaultChatFeedbackModel) Update(ctx context.Context, data *ChatFeedback) (*mongo.UpdateResult, error) {
 	data.UpdateAt = time.Now()
 
 	res, err := m.conn.UpdateOne(ctx, bson.M{"_id": data.ID}, bson.M{"$set": data})
 	return res, err
 }
 
-func (m *defaultChatTypeModel) Delete(ctx context.Context, id string) (int64, error) {
+func (m *defaultChatFeedbackModel) Delete(ctx context.Context, id string) (int64, error) {
 	oid, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return 0, ErrInvalidObjectId

@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	Chat_CreateChatSession_FullMethodName = "/pd.Chat/CreateChatSession"
 	Chat_ChatCompletion_FullMethodName    = "/pd.Chat/ChatCompletion"
+	Chat_Feedback_FullMethodName          = "/pd.Chat/Feedback"
 )
 
 // ChatClient is the client API for Chat service.
@@ -31,6 +32,8 @@ type ChatClient interface {
 	CreateChatSession(ctx context.Context, in *CreateChatSessionReq, opts ...grpc.CallOption) (*CreateChatSessionResp, error)
 	// 发起对话
 	ChatCompletion(ctx context.Context, in *ChatCompletionReq, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ChatCompletionResp], error)
+	// 对话反馈
+	Feedback(ctx context.Context, in *FeedbackReq, opts ...grpc.CallOption) (*FeedbackResp, error)
 }
 
 type chatClient struct {
@@ -70,6 +73,16 @@ func (c *chatClient) ChatCompletion(ctx context.Context, in *ChatCompletionReq, 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type Chat_ChatCompletionClient = grpc.ServerStreamingClient[ChatCompletionResp]
 
+func (c *chatClient) Feedback(ctx context.Context, in *FeedbackReq, opts ...grpc.CallOption) (*FeedbackResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FeedbackResp)
+	err := c.cc.Invoke(ctx, Chat_Feedback_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ChatServer is the server API for Chat service.
 // All implementations must embed UnimplementedChatServer
 // for forward compatibility.
@@ -78,6 +91,8 @@ type ChatServer interface {
 	CreateChatSession(context.Context, *CreateChatSessionReq) (*CreateChatSessionResp, error)
 	// 发起对话
 	ChatCompletion(*ChatCompletionReq, grpc.ServerStreamingServer[ChatCompletionResp]) error
+	// 对话反馈
+	Feedback(context.Context, *FeedbackReq) (*FeedbackResp, error)
 	mustEmbedUnimplementedChatServer()
 }
 
@@ -93,6 +108,9 @@ func (UnimplementedChatServer) CreateChatSession(context.Context, *CreateChatSes
 }
 func (UnimplementedChatServer) ChatCompletion(*ChatCompletionReq, grpc.ServerStreamingServer[ChatCompletionResp]) error {
 	return status.Errorf(codes.Unimplemented, "method ChatCompletion not implemented")
+}
+func (UnimplementedChatServer) Feedback(context.Context, *FeedbackReq) (*FeedbackResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Feedback not implemented")
 }
 func (UnimplementedChatServer) mustEmbedUnimplementedChatServer() {}
 func (UnimplementedChatServer) testEmbeddedByValue()              {}
@@ -144,6 +162,24 @@ func _Chat_ChatCompletion_Handler(srv interface{}, stream grpc.ServerStream) err
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type Chat_ChatCompletionServer = grpc.ServerStreamingServer[ChatCompletionResp]
 
+func _Chat_Feedback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FeedbackReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServer).Feedback(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Chat_Feedback_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServer).Feedback(ctx, req.(*FeedbackReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Chat_ServiceDesc is the grpc.ServiceDesc for Chat service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -154,6 +190,10 @@ var Chat_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateChatSession",
 			Handler:    _Chat_CreateChatSession_Handler,
+		},
+		{
+			MethodName: "Feedback",
+			Handler:    _Chat_Feedback_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
