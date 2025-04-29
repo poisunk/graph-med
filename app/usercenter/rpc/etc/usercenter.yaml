@@ -2,6 +2,12 @@ Name: usercenter.rpc
 ListenOn: 0.0.0.0:2001
 Mode: dev
 
+#监控
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4002
+  Path: /metrics
+
 Log:
   ServiceName: usercenter-rpc
   Level: error

@@ -2,6 +2,13 @@ Name: chat.rpc
 ListenOn: 0.0.0.0:2003
 Mode: dev
 
+#监控
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4006
+  Path: /metrics
+
+
 Log:
   ServiceName: chat-rpc
   Level: error

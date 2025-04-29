@@ -2,6 +2,13 @@ Name: captcha.rpc
 ListenOn: 0.0.0.0:2002
 Mode: dev
 
+#监控
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4004
+  Path: /metrics
+
+
 Log:
   ServiceName: captcha-rpc
   Level: error

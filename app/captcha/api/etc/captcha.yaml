@@ -3,6 +3,12 @@ Host: 0.0.0.0
 Port: 1002
 Mode: dev
 
+#监控
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4003
+  Path: /metrics
+
 Log:
   ServiceName: captcha-api
   Level: error
