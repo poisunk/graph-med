@@ -34,6 +34,21 @@ services:
     networks:
       - graph_med_net
 
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - 27017:27017
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - ./data/mongo/data:/data/db
+    command: "mongod"
+    privileged: true
+    restart: always
+    networks:
+      - graph_med_net
+
 
 networks:
   graph_med_net:

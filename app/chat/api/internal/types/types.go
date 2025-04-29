@@ -3,10 +3,53 @@
 
 package types
 
-type Request struct {
-	Name string `path:"name,options=you|me"`
+type ChatCompletionReq struct {
+	SessionId       string `json:"sessionId"`
+	ParentMessageId int64  `json:"parentMessageId"`
+	Prompt          string `json:"prompt"`
 }
 
-type Response struct {
-	Message string `json:"message"`
+type ChatCompletionResp struct {
+	Choices          []Choice `json:"choices"`
+	Model            string   `json:"model"`
+	PromptTokenUsage int64    `json:"promptTokenUsage"`
+	ChunkTokenUsage  int64    `json:"chunkTokenUsage"`
+	Created          int64    `json:"created"`
+	MessageId        int64    `json:"messageId"`
+	ParentId         int64    `json:"parentId"`
+}
+
+type Choice struct {
+	Index        int64       `json:"index"`
+	Delta        DeltaStruct `json:"delta"`
+	ToolCalls    []ToolCall  `json:"toolCalls"`
+	FinishReason string      `json:"finishReason"`
+}
+
+type CreateChatSessionReq struct {
+}
+
+type CreateChatSessionResp struct {
+	SessionId string `json:"sessionId"`
+	CreatedAt string `json:"createdAt"`
+}
+
+type DeltaStruct struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+	Type    string `json:"type"`
+}
+
+type FeedbackReq struct {
+	SsessionId string `json:"sessionId"`
+	MessageId  int64  `json:"messageId"`
+	Feedback   string `json:"feedback"`
+}
+
+type FeedbackResp struct {
+}
+
+type ToolCall struct {
+	Name      string `json:"name"`
+	Arguments string `json:"arguments"`
 }

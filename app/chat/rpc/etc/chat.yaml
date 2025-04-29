@@ -1,16 +1,16 @@
-Name: rpc.rpc
+Name: chat.rpc
 ListenOn: 0.0.0.0:2003
 Mode: dev
 
 Log:
-  ServiceName: usercenter-rpc
+  ServiceName: chat-rpc
   Level: error
 
 Redis:
-  Host: localhost:6379
+  Host: redis:6379
   Key: chat-rpc
 Mongo:
-  Url: mongodb://localhost:27017
+  Url: mongodb://mongo:27017
   DB: graph_med_chat
 Cache:
-  - Host: localhost:6379
+  - Host: redis:6379

@@ -1,15 +1,30 @@
 syntax = "v1"
 
-type Request {
-	Name string `path:"name,options=you|me"`
-}
+info (
+	title: "对话服务"
+	desc:  "对话服务"
+)
 
-type Response {
-	Message string `json:"message"`
-}
+import (
+	"chat/chat.api"
+)
 
-service chat-api {
-	@handler ChatHandler
-	get /from/:name (Request) returns (Response)
+@server (
+	prefix: chat/v1
+	group:  chat
+	jwt:    JwtAuth
+)
+service chat {
+	@doc "创建对话session"
+	@handler createChatSession
+	post /session/create (CreateChatSessionReq) returns (CreateChatSessionResp)
+
+	@doc "发起对话"
+	@handler chatCompletion
+	post /chat/completion (ChatCompletionReq)
+
+	@doc "对话反馈"
+	@handler feedback
+	post /feedback (FeedbackReq) returns (FeedbackResp)
 }
 

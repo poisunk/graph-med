@@ -12,4 +12,4 @@ Redis:
 DB:
   DataSource: root:123456@tcp(mysql:3306)/graph_med_usercenter?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 Cache:
-  - Host: localhost:6379
+  - Host: redis:6379

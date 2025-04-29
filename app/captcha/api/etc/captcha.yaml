@@ -4,7 +4,7 @@ Port: 1002
 Mode: dev
 
 Log:
-  ServiceName: usercenter-api
+  ServiceName: captcha-api
   Level: error
 
 #rpc service
