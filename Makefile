@@ -33,4 +33,4 @@ clean:
 
 .PHONY: up
 up:
-	docker-compose $(DOCKER_COMPOSE_FILES) up -d
+	docker compose $(DOCKER_COMPOSE_FILES) up -d
