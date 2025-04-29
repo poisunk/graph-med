@@ -3,13 +3,13 @@ package logic
 import (
 	"context"
 	"fmt"
+	"github.com/google/uuid"
 	images "github.com/wenlng/go-captcha-assets/resources/images_v2"
 	"github.com/wenlng/go-captcha/v2/base/option"
 	"github.com/wenlng/go-captcha/v2/rotate"
 	"github.com/zeromicro/go-zero/core/logx"
 	"graph-med/app/captcha/rpc/internal/svc"
 	"graph-med/app/captcha/rpc/pd"
-	"graph-med/internal/utils"
 	"log"
 )
 
@@ -51,7 +51,7 @@ func (l *RotateCaptchaLogic) RotateCaptcha(in *pd.RotateCaptchaReq) (*pd.RotateC
 		return nil, err
 	}
 
-	captchaKey := utils.GenerateUUID()
+	captchaKey := uuid.New().String()
 	angle := captData.GetData().Angle
 
 	graphMedCaptchaKey := fmt.Sprintf("%s%v", cacheGraphMedCaptchaRotatePrefix, captchaKey)

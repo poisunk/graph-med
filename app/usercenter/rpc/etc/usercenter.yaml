@@ -8,6 +8,10 @@ Prometheus:
   Port: 4002
   Path: /metrics
 
+JwtAuth:
+  AccessSecret: ae0536f9-6450-4606-8e13-5a19ed505da0
+  AccessExpire: 31536000
+
 Log:
   ServiceName: usercenter-rpc
   Level: error

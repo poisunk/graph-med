@@ -5,7 +5,6 @@ package model
 
 import (
 	"context"
-	"graph-med/deploy/script/mongo/model"
 	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/monc"
@@ -46,7 +45,7 @@ func (m *defaultMcpServiceModel) Insert(ctx context.Context, data *McpService) e
 func (m *defaultMcpServiceModel) FindOne(ctx context.Context, id string) (*McpService, error) {
 	oid, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
-		return nil, model.ErrInvalidObjectId
+		return nil, ErrInvalidObjectId
 	}
 
 	var data McpService
@@ -56,7 +55,7 @@ func (m *defaultMcpServiceModel) FindOne(ctx context.Context, id string) (*McpSe
 	case nil:
 		return &data, nil
 	case monc.ErrNotFound:
-		return nil, model.ErrNotFound
+		return nil, ErrNotFound
 	default:
 		return nil, err
 	}
@@ -72,7 +71,7 @@ func (m *defaultMcpServiceModel) Update(ctx context.Context, data *McpService) (
 func (m *defaultMcpServiceModel) Delete(ctx context.Context, id string) (int64, error) {
 	oid, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
-		return 0, model.ErrInvalidObjectId
+		return 0, ErrInvalidObjectId
 	}
 	key := prefixMcpServiceCacheKey + id
 	res, err := m.conn.DeleteOne(ctx, key, bson.M{"_id": oid})
