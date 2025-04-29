@@ -1,0 +1,53 @@
+global:
+  scrape_interval:
+  external_labels:
+    monitor: 'codelab-monitor'
+
+scrape_configs:
+  - job_name: 'prometheus'
+    scrape_interval: 5s  #global catch time
+    static_configs:
+      - targets: ['127.0.0.1:9090']
+
+  - job_name: 'usercenter-api'
+    static_configs:
+      - targets: [ 'graph-med:4001' ]
+        labels:
+          job: usercenter-api
+          app: usercenter-api
+          env: dev
+  - job_name: 'usercenter-rpc'
+    static_configs:
+      - targets: [ 'graph-med:4002' ]
+        labels:
+          job: usercenter-rpc
+          app: usercenter-rpc
+          env: dev
+  - job_name: 'captcha-api'
+    static_configs:
+      - targets: [ 'graph-med:4003' ]
+        labels:
+          job: captcha-api
+          app: captcha-api
+          env: dev
+  - job_name: 'captcha-rpc'
+    static_configs:
+      - targets: [ 'graph-med:4004' ]
+        labels:
+          job: captcha-rpc
+          app: captcha-rpc
+          env: dev
+  - job_name: 'chat-api'
+    static_configs:
+      - targets: [ 'graph-med:4005' ]
+        labels:
+          job: chat-api
+          app: chat-api
+          env: dev
+  - job_name: 'chat-rpc'
+    static_configs:
+      - targets: [ 'graph-med:4006' ]
+        labels:
+          job: chat-rpc
+          app: chat-rpc
+          env: dev
