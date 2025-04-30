@@ -175,6 +175,7 @@ func (l *ChatCompletionLogic) ChatCompletion(in *pd.ChatCompletionReq, stream pd
 						Delta: &pd.ChatCompletionResp_Choice_Delta{
 							Role:    chatModel.ChatMessageRoleAssistant,
 							Content: turn.Content,
+							Type:    turn.Type,
 						},
 					},
 				},

@@ -1,6 +1,7 @@
 Name: chat-api
 Host: 0.0.0.0
 Port: 1003
+Timeout: 600000
 
 #监控
 Prometheus:
